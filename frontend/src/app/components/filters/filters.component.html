@@ -1,0 +1,13 @@
+<div class="filters-container">
+  <mat-chip-listbox multiple aria-label="Category filters">
+    @for (category of categories; track category.id) {
+      <mat-chip-option 
+        [selected]="selectedCategories.has(category.id)"
+        (click)="toggleCategory(category.id)"
+        [class.selected]="selectedCategories.has(category.id)">
+        <mat-icon>{{ category.icon }}</mat-icon>
+        {{ category.label }}
+      </mat-chip-option>
+    }
+  </mat-chip-listbox>
+</div>

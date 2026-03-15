@@ -1,0 +1,167 @@
+<div class="app-container" [class.dark-mode]="darkMode()">
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-btn" (click)="toggleMenu()">
+        <span class="material-icon">menu</span>
+      </button>
+      @if (getLogo()) {
+        <div class="app-logo" [innerHTML]="getLogo()"></div>
+      }
+      <h1 class="app-title">{{ themeStrings().appName }}</h1>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn lang-btn" (click)="toggleLangMenu()">
+        <span class="material-icon">language</span>
+        <span class="lang-code">{{ currentLanguage.toUpperCase() }}</span>
+      </button>
+      <button class="icon-btn" (click)="toggleDarkMode()">
+        <span class="material-icon">{{ darkMode() ? 'light_mode' : 'dark_mode' }}</span>
+      </button>
+      <button class="icon-btn" (click)="onLocate()">
+        <span class="material-icon">my_location</span>
+      </button>
+    </div>
+  </header>
+
+  @if (showLangMenu()) {
+    <div class="lang-menu">
+      @for (lang of languages; track lang.code) {
+        <button
+          class="lang-option"
+          [class.active]="currentLanguage === lang.code"
+          (click)="setLanguage(lang.code)">
+          {{ lang.name }}
+        </button>
+      }
+    </div>
+  }
+
+  <div class="filters-bar">
+    @for (category of categories; track category.id) {
+      <button
+        class="filter-chip"
+        [class.active]="selectedCategories().has(category.id)"
+        (click)="toggleCategory(category.id)">
+        <span class="material-icon">{{ getCategoryIcon(category.id) }}</span>
+        <span class="chip-label">{{ getCategoryLabel(category.id) }}</span>
+      </button>
+    }
+  </div>
+
+  @if (showList()) {
+    <div class="places-sidebar">
+      <div class="sidebar-header">
+        <h2>{{ t.places.title }}</h2>
+        <span class="places-count">{{ visiblePlaces.length }} {{ t.places.count }}</span>
+      </div>
+      <div class="places-scroll" #placesList>
+      @if (isLoading()) {
+        <div class="loader-container">
+          <div class="spinner"></div>
+          <p>Ładowanie miejsc...</p>
+        </div>
+      } @else {
+        @for (place of visiblePlaces; track place.id) {
+          <div
+            class="place-card"
+            [class.selected]="selectedPlace()?.id === place.id"
+            [attr.data-id]="place.id"
+            (click)="selectPlace(place)">
+            <div class="place-image" [style.background-color]="getCategoryColor(place.category)">
+              <span class="material-icon">{{ getCategoryIcon(place.category) }}</span>
+            </div>
+            <div class="place-details">
+              <h3>{{ place.name }}</h3>
+              <p class="place-category">{{ getCategoryLabel(place.category) }}</p>
+              <div class="place-rating">
+                <span class="material-icon star">star</span>
+                <span>{{ place.rating.toFixed(1) }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+  }
+
+  <button class="sidebar-toggle" (click)="toggleList()" [class.collapsed]="!showList()">
+    <span class="material-icon">{{ showList() ? 'chevron_left' : 'chevron_right' }}</span>
+  </button>
+
+  <main class="map-container" [class.full-width]="!showList()" id="map"></main>
+
+  @if (selectedPlace()) {
+    <div class="place-detail-panel" [class.full-width]="!showList()">
+      <button class="close-btn" (click)="closePlaceDetail()">
+        <span class="material-icon">close</span>
+      </button>
+      <div class="detail-header">
+        <div class="detail-category-icon" [style.background-color]="getCategoryColor(selectedPlace()!.category)">
+          <span class="material-icon">{{ getCategoryIcon(selectedPlace()!.category) }}</span>
+        </div>
+        <div class="detail-info">
+          <h2>{{ selectedPlace()!.name }}</h2>
+          <p class="detail-category">{{ getCategoryLabel(selectedPlace()!.category) }}</p>
+        </div>
+      </div>
+
+      <div class="detail-rating">
+        <span class="material-icon star">star</span>
+        <span class="rating-value">{{ selectedPlace()!.rating }}</span>
+        <span class="review-count">({{ selectedPlace()!.rating * 12 }} opinii)</span>
+      </div>
+
+      <p class="detail-description">
+        {{ selectedPlace()!.name }} to {{ getCategoryLabel(selectedPlace()!.category).toLowerCase() }}
+      </p>
+
+      <div class="detail-actions">
+        <button class="action-btn">
+          <span class="material-icon">directions</span>
+          <span>Dojedź</span>
+        </button>
+        <button class="action-btn">
+          <span class="material-icon">share</span>
+          <span>Udostępnij</span>
+        </button>
+        <button class="action-btn">
+          <span class="material-icon">favorite_border</span>
+          <span>Zapisz</span>
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="zoom-controls">
+    <button class="zoom-btn" (click)="zoomIn()">
+      <span class="material-icon">add</span>
+    </button>
+    <button class="zoom-btn" (click)="zoomOut()">
+      <span class="material-icon">remove</span>
+    </button>
+  </div>
+
+  @if (showWelcome()) {
+    <div class="welcome-overlay" (click)="onLocate()">
+      <div class="welcome-content">
+        <div class="welcome-icon" [class.with-logo]="getLogo()">
+          @if (getLogo()) {
+            <div class="logo-svg" [innerHTML]="getLogo()"></div>
+          } @else {
+            <span class="material-icon">{{ themeIcons().logo }}</span>
+          }
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring delay-1"></div>
+          <div class="pulse-ring delay-2"></div>
+        </div>
+        <h1>{{ t.app.welcomeTitle }}</h1>
+        <p>{{ t.app.welcomeSubtitle }}</p>
+        <button class="cta-button">
+          <span class="material-icon">my_location</span>
+          {{ t.app.welcomeButton }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

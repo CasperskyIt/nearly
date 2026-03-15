@@ -65,6 +65,11 @@ Nearly is a location-based discovery app that helps users find micro-adventures 
 | DTOs | Sufix with DTO | `PlaceDTO`, `LocationDTO` |
 | Entities | No suffix | `Place`, `User` |
 
+### Angular Conventions
+
+- **Zawsze używaj osobnych plików** dla template (`.html`) i stylów (`.scss`) - NIGDY inline w komponencie
+- Używaj standalone components
+- Dodawaj pliki: `component.ts`, `component.html`, `component.scss` w tym samym katalogu
 
 ### Java Conventions
 

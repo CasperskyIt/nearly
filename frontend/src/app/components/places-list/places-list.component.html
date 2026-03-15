@@ -1,0 +1,15 @@
+<div class="places-list">
+  <h3>Nearby Places</h3>
+  <div class="places">
+    @for (place of mockPlaces; track place.id) {
+      <div class="place-card" (click)="onSelectPlace(place)">
+        <div class="place-image"></div>
+        <div class="place-info">
+          <h4>{{ place.name }}</h4>
+          <p>{{ place.category }}</p>
+          <span class="rating">★ {{ place.rating }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>
