@@ -63,11 +63,14 @@ Pulled directly from `styles.scss` and `home.component.scss`. All roles already 
 |------|------|--------|-------------|-------|
 | Body | 14px | 400 | 1.5 | `.lang-option`, `.place-category`, `.detail-category`, `.detail-description` |
 | Label | 15px | 600 | 1.4 | `.place-details h3` (place card names) |
-| Subheading | 18px–20px | 600 | 1.3 | `.sidebar-header h2` (18px), `.app-title` (20px), `.detail-info h2` (20px) |
-| Display | 32px | 700 | 1.2 | `.welcome-content h1` |
+| Subheading | 20px | 600 | 1.3 | `.sidebar-header h2` (18px existing), `.app-title` (20px), `.detail-info h2` (20px) |
+| Display | 32px | 400 | 1.2 | `.welcome-content h1` |
 
-Secondary text (counts, metadata): 13px, weight 400, color `var(--color-text-secondary)`.
-Caption text (language code chip): 12px, weight 600.
+**Declared weights: 400 (regular) and 600 (semibold).** Do not apply any other weight to new or extracted component markup.
+
+> 700 weight exists on `.welcome-content h1` (display only) — preserved as-is in the existing SCSS; do not apply to any new or extracted component markup.
+
+> Incidental existing sizes — 12px language chip, 13px metadata counts. Present in existing SCSS only; do not introduce in extracted components.
 
 Body line-height default: 1.5 (set on `body` in `styles.scss` — do not override in extracted components).
 
