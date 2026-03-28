@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { LoggerService } from './logger.service';
 
@@ -37,18 +37,49 @@ export class SupabaseService {
   places = signal<Place[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+  currentUser = signal<User | null>(null);
 
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
-      environment.supabaseAnonKey
+      environment.supabaseAnonKey,
+      {
+        auth: {
+          flowType: 'pkce',
+          detectSessionInUrl: true,
+        }
+      }
     );
+
+    this.supabase.auth.onAuthStateChange((_event, session) => {
+      this.currentUser.set(session?.user ?? null);
+    });
+  }
+
+  async initSession(): Promise<void> {
+    const { data: { user } } = await this.supabase.auth.getUser();
+    this.currentUser.set(user);
+  }
+
+  async signInWithGoogle(): Promise<void> {
+    const { error } = await this.supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: environment.authCallbackUrl,
+      },
+    });
+    if (error) throw error;
+  }
+
+  async signOut(): Promise<void> {
+    const { error } = await this.supabase.auth.signOut();
+    if (error) throw error;
   }
 
   async getPlacesNearby(lat: number, lng: number, radiusKm: number = 10): Promise<Place[]> {
     this.loading.set(true);
     this.error.set(null);
-    
+
     try {
       const { data, error } = await this.supabase
         .rpc('get_places_nearby', {
@@ -58,7 +89,7 @@ export class SupabaseService {
         });
 
       if (error) throw error;
-      
+
       this.places.set(data || []);
       return data || [];
     } catch (err: any) {
@@ -72,7 +103,7 @@ export class SupabaseService {
 
   async getPlacesByCategory(category: string): Promise<Place[]> {
     this.loading.set(true);
-    
+
     try {
       const { data, error } = await this.supabase
         .from('places')
@@ -80,7 +111,7 @@ export class SupabaseService {
         .eq('category', category);
 
       if (error) throw error;
-      
+
       return data || [];
     } catch (err: any) {
       this.error.set(err.message);
@@ -165,35 +196,5 @@ export class SupabaseService {
       this.error.set(err.message);
       return [];
     }
-  }
-
-  async signUp(email: string, password: string) {
-    return await this.supabase.auth.signUp({ email, password });
-  }
-
-  async signIn(email: string, password: string) {
-    return await this.supabase.auth.signInWithPassword({ email, password });
-  }
-
-  async signOut() {
-    return await this.supabase.auth.signOut();
-  }
-
-  async getUser() {
-    const { data: { user } } = await this.supabase.auth.getUser();
-    return user;
-  }
-
-  async updateProfile(username: string, avatarUrl?: string) {
-    const user = await this.getUser();
-    if (!user) return null;
-
-    return await this.supabase
-      .from('profiles')
-      .upsert({
-        id: user.id,
-        username,
-        avatar_url: avatarUrl
-      });
   }
 }
