@@ -54,7 +54,7 @@
 
 Plans:
 - [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
-- [ ] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
+- [x] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
 - [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
 
 **Pitfalls addressed in this phase:**
@@ -85,7 +85,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Secure credentials and fix broken test suite
+- [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
 - [ ] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
 - [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
 

@@ -8,7 +8,7 @@
 ### Foundation
 
 - [x] **FOUND-01**: Supabase anon key and URL moved to environment variables (not hardcoded in source)
-- [ ] **FOUND-02**: `HomeComponent` refactored — business logic extracted, template under 100 lines
+- [x] **FOUND-02**: `HomeComponent` refactored — business logic extracted, template under 100 lines
 - [ ] **FOUND-03**: Mock/placeholder data and console.log statements removed from production code
 
 ### Authentication
@@ -92,7 +92,7 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | FOUND-01 | Phase 1 | Complete |
-| FOUND-02 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Complete |
 | FOUND-03 | Phase 1 | Pending |
 | AUTH-01 | Phase 2 | Pending |
 | AUTH-02 | Phase 2 | Pending |
