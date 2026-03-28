@@ -18,6 +18,21 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: ':app/dogs',
+    loadComponent: () => import('./pages/dog-list/dog-list.component').then(m => m.DogListComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: ':app/dogs/new',
+    loadComponent: () => import('./pages/dog-create/dog-create.component').then(m => m.DogCreateComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: ':app/dogs/:id',
+    loadComponent: () => import('./pages/dog-detail/dog-detail.component').then(m => m.DogDetailComponent),
+    canActivate: [authGuard],
+  },
+  {
     path: ':app',
     component: HomeComponent,
   },
