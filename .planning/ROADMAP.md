@@ -24,7 +24,7 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Cleanup | 3/3 | Complete    | 2026-03-28 |
-| 2. Authentication | 0/3 | Not started | — |
+| 2. Authentication | 1/4 | In Progress|  |
 | 3. Dog Profiles | 0/5 | Not started | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
 | 5. Daily Care Tracking | 0/4 | Not started | — |
@@ -82,7 +82,7 @@ Plans:
 3. Navigating to any protected route while unauthenticated redirects to `/dogly/login` cleanly
 4. Clicking "Sign out" terminates the session and redirects to `/dogly/login`; the back button after sign-out does not restore the authenticated state
 
-**Plans:** 3 plans
+**Plans:** 1/4 plans executed
 
 Plans:
 - [ ] 02-01-PLAN.md — Auth service layer, guards, app config, and route wiring

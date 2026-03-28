@@ -13,10 +13,10 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can sign in with Google account
-- [ ] **AUTH-02**: User session persists across browser refresh (no redirect loop on hard refresh)
-- [ ] **AUTH-03**: Unauthenticated users are redirected to a login page when accessing protected routes
-- [ ] **AUTH-04**: User can sign out
+- [x] **AUTH-01**: User can sign in with Google account
+- [x] **AUTH-02**: User session persists across browser refresh (no redirect loop on hard refresh)
+- [x] **AUTH-03**: Unauthenticated users are redirected to a login page when accessing protected routes
+- [x] **AUTH-04**: User can sign out
 
 ### Dog Profiles
 
@@ -94,10 +94,10 @@
 | FOUND-01 | Phase 1 | Complete |
 | FOUND-02 | Phase 1 | Complete |
 | FOUND-03 | Phase 1 | Complete |
-| AUTH-01 | Phase 2 | Pending |
-| AUTH-02 | Phase 2 | Pending |
-| AUTH-03 | Phase 2 | Pending |
-| AUTH-04 | Phase 2 | Pending |
+| AUTH-01 | Phase 2 | Complete |
+| AUTH-02 | Phase 2 | Complete |
+| AUTH-03 | Phase 2 | Complete |
+| AUTH-04 | Phase 2 | Complete |
 | DOG-01 | Phase 3 | Pending |
 | DOG-02 | Phase 3 | Pending |
 | DOG-03 | Phase 3 | Pending |

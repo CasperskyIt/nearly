@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-28T07:40:55.772Z"
+last_updated: "2026-03-28T09:48:02.589Z"
 progress:
   total_phases: 7
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 7
+  completed_plans: 4
 ---
 
 # Dogly — Project State
@@ -67,3 +67,5 @@ Phase 01 — foundation-cleanup complete (3/3 plans). Ready for Phase 02 — Aut
 - [Phase 01-foundation-cleanup]: getCategoryColor/Icon/Label as arrow function properties on HomeComponent to avoid Angular template type errors with optional chaining bind()
 - [Phase 01-foundation-cleanup]: LoggerService uses environment.production flag — no-op in prod, delegates to console in dev
 - [Phase 01-foundation-cleanup]: OSM null guard: response?.elements ?? [] before .map() prevents crash on empty Overpass responses
+- [Phase 02-authentication]: Spec files for not-yet-existing source files omit top-level imports to prevent TS2307 compilation errors — later plan executors add real imports when implementing
+- [Phase 02-authentication]: All placeholder tests use xit() (not it()) so Karma reports them as skipped, not pending failures
