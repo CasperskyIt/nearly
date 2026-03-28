@@ -10,7 +10,7 @@
 ## Phases
 
 - [x] **Phase 1: Foundation & Cleanup** — Rotate leaked credentials, extract HomeComponent god object, remove mock data and console logs (completed 2026-03-28)
-- [ ] **Phase 2: Authentication** — Google OAuth login, persistent session across refresh, protected routes
+- [x] **Phase 2: Authentication** — Google OAuth login, persistent session across refresh, protected routes (completed 2026-03-28)
 - [ ] **Phase 3: Dog Profiles** — Full dog CRUD, avatar upload, multi-dog switcher, RLS foundation
 - [ ] **Phase 4: Co-Guardians** — Token-based invite flow, email via Resend Edge Function, guardian management
 - [ ] **Phase 5: Daily Care Tracking** — Unified care_events feed, feeding/weight/note logging, Realtime sync
@@ -24,7 +24,7 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Cleanup | 3/3 | Complete    | 2026-03-28 |
-| 2. Authentication | 3/4 | In Progress|  |
+| 2. Authentication | 4/4 | Complete   | 2026-03-28 |
 | 3. Dog Profiles | 0/5 | Not started | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
 | 5. Daily Care Tracking | 0/4 | Not started | — |
@@ -82,11 +82,11 @@ Plans:
 3. Navigating to any protected route while unauthenticated redirects to `/dogly/login` cleanly
 4. Clicking "Sign out" terminates the session and redirects to `/dogly/login`; the back button after sign-out does not restore the authenticated state
 
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 - [x] 02-01-PLAN.md — Auth service layer, guards, app config, and route wiring
-- [ ] 02-02-PLAN.md — Login page, auth callback, and account page components
+- [x] 02-02-PLAN.md — Login page, auth callback, and account page components
 - [x] 02-03-PLAN.md — Header auth UI with avatar dropdown and sign-out confirmation
 
 **Pitfalls addressed in this phase:**

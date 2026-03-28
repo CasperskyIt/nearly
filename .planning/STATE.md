@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-28T09:52:40.040Z"
+last_updated: "2026-03-28T09:54:20.788Z"
 progress:
   total_phases: 7
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Dogly — Project State
@@ -74,3 +74,6 @@ Phase 02 — Authentication in progress (1/3 plans complete).
 - [Phase 02-01]: authGuard uses router.parseUrl() (UrlTree) not imperative navigate() for correct guard return pattern
 - [Phase 02-authentication]: themeService.theme (public getter) used instead of themeService.currentTheme (private signal) for template access in HeaderComponent
 - [Phase 02-authentication]: SignOutConfirmDialog defined in same file as HeaderComponent — acceptable for small inline-dialog components
+- [Phase 02-authentication]: errorMessage passed via query param from AuthCallbackComponent to LoginComponent — avoids shared state, works across navigation boundary
+- [Phase 02-authentication]: AuthCallbackComponent checks error query param FIRST before subscribing to onAuthStateChange — prevents phantom subscription on OAuth cancellation path
+- [Phase 02-authentication]: returnUrl sanitisation rejects paths containing '/login' to prevent redirect loops
