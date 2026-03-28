@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-28T09:54:20.788Z"
+last_updated: "2026-03-28T11:57:43.151Z"
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 12
+  completed_plans: 8
 ---
 
 # Dogly — Project State
@@ -18,7 +18,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-22)
 
 **Core value:** Multiple people caring for one dog always know what it ate, its health status, and what's coming up — no guessing, no missed medications.
-**Current focus:** Phase 02 — Authentication
+**Current focus:** Phase 03 — dog-profiles
 
 ## Milestone
 
@@ -29,8 +29,8 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 | Phase | Name | Status |
 |-------|------|--------|
 | 1 | Foundation & Cleanup | ✓ Complete |
-| 2 | Authentication | ○ Pending |
-| 3 | Dog Profiles | ○ Pending |
+| 2 | Authentication | ◐ In Progress (1/3) |
+| 3 | Dog Profiles | ◐ In Progress (1/5) |
 | 4 | Co-Guardians | ○ Pending |
 | 5 | Daily Care Tracking | ○ Pending |
 | 6 | Health Records & Reminders | ○ Pending |
@@ -38,9 +38,9 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 
 ## Active Work
 
-Phase 02 — Authentication in progress (1/3 plans complete).
+Phase 03 — Dog Profiles in progress (1/5 plans complete).
 
-**Last stopped at:** Completed 02-01-PLAN.md (auth service foundation — currentUser signal, PKCE OAuth, route guards, provideAppInitializer)
+**Last stopped at:** Completed 03-01-PLAN.md (dog schema foundation — dogs, dog_guardians, is_dog_guardian RLS, 5 tables with RLS policies, auto-trigger)
 
 ## Key Context
 
@@ -77,3 +77,6 @@ Phase 02 — Authentication in progress (1/3 plans complete).
 - [Phase 02-authentication]: errorMessage passed via query param from AuthCallbackComponent to LoginComponent — avoids shared state, works across navigation boundary
 - [Phase 02-authentication]: AuthCallbackComponent checks error query param FIRST before subscribing to onAuthStateChange — prevents phantom subscription on OAuth cancellation path
 - [Phase 02-authentication]: returnUrl sanitisation rejects paths containing '/login' to prevent redirect loops
+- [Phase 03-dog-profiles]: is_dog_guardian() SECURITY DEFINER function is the single access control pivot for all dog-related tables — returns true if user is owner OR accepted co-guardian
+- [Phase 03-01]: RLS policies pre-written on care_events, health_records, reminders tables even though empty, per ROADMAP Pitfall 1 — prevents security gaps when features ship
+- [Phase 03-01]: Owner guardian row auto-created via trigger on dog insert — simplifies client code and ensures consistency
