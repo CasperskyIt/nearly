@@ -25,7 +25,7 @@
 |-------|----------------|--------|-----------|
 | 1. Foundation & Cleanup | 3/3 | Complete    | 2026-03-28 |
 | 2. Authentication | 4/4 | Complete   | 2026-03-28 |
-| 3. Dog Profiles | 3/5 | In Progress | — |
+| 3. Dog Profiles | 4/5 | In Progress | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
 | 5. Daily Care Tracking | 0/4 | Not started | — |
 | 6. Health Records & Reminders | 0/5 | Not started | — |

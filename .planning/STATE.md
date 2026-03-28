@@ -30,7 +30,6 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 |-------|------|--------|
 | 1 | Foundation & Cleanup | ✓ Complete |
 | 2 | Authentication | ✓ Complete |
-| 3 | Dog Profiles | ◐ In Progress (3/5) |
 | 3 | Dog Profiles | ◐ In Progress (4/5) |
 | 4 | Co-Guardians | ○ Pending |
 | 5 | Daily Care Tracking | ○ Pending |
@@ -39,9 +38,9 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 
 ## Active Work
 
-Phase 03 — Dog Profiles in progress (2/5 plans complete).
+Phase 03 — Dog Profiles in progress (3/5 plans complete).
 
-**Last stopped at:** Completed 03-04-PLAN.md (Dog Detail Hub with tabbed layout, edit/delete dialogs, avatar upload)
+**Last stopped at:** Completed 03-03-PLAN.md (Dog List and Create page components)
 
 ## Key Context
 
@@ -81,3 +80,7 @@ Phase 03 — Dog Profiles in progress (2/5 plans complete).
 - [Phase 03-dog-profiles]: is_dog_guardian() SECURITY DEFINER function is the single access control pivot for all dog-related tables — returns true if user is owner OR accepted co-guardian
 - [Phase 03-01]: RLS policies pre-written on care_events, health_records, reminders tables even though empty, per ROADMAP Pitfall 1 — prevents security gaps when features ship
 - [Phase 03-01]: Owner guardian row auto-created via trigger on dog insert — simplifies client code and ensures consistency
+- [Phase 03-03]: DogListComponent uses `getAppPrefix()` private method pattern (consistent with HeaderComponent) to extract theme name for route navigation
+- [Phase 03-03]: DogCreateComponent form uses FormControl with Validators.required for name; breed and dateOfBirth optional (per D-06: minimize friction on create)
+- [Phase 03-03]: Date picker uses Material DatePicker with MatNativeDateModule; dateOfBirth converted to ISO string (YYYY-MM-DD) before API call
+- [Phase 03-03]: Skeleton loader uses CSS @keyframes pulse animation instead of ngx-skeleton-loader (lighter dependency footprint)
