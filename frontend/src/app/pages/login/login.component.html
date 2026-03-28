@@ -1,1 +1,39 @@
-<p>Login</p>
+<div class="login-container">
+  <div class="branding-panel">
+    <div class="branding-content">
+      @if (theme?.logo) {
+        <div class="logo" [innerHTML]="theme.logo"></div>
+      } @else {
+        <mat-icon class="logo-icon">{{ theme?.icons?.logo ?? 'explore' }}</mat-icon>
+      }
+      <h1 class="app-name">{{ theme?.strings?.appName ?? 'Dogly' }}</h1>
+      <p class="tagline">{{ tagline() }}</p>
+    </div>
+  </div>
+  <div class="signin-panel">
+    <div class="signin-card">
+      @if (theme?.logo) {
+        <div class="card-logo" [innerHTML]="theme.logo"></div>
+      }
+      <h2>Welcome</h2>
+      <p class="subtitle">Sign in to continue</p>
+
+      @if (errorMessage()) {
+        <div class="error-message">{{ errorMessage() }}</div>
+      }
+
+      <button
+        mat-raised-button
+        class="google-btn"
+        (click)="signIn()"
+        [disabled]="loading()">
+        @if (loading()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
+          Sign in with Google
+        }
+      </button>
+    </div>
+  </div>
+</div>
