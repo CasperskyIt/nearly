@@ -9,7 +9,8 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { DomSanitizer, SecurityContext } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SecurityContext } from '@angular/core';
 import { ThemeService } from '../../config/theme.service';
 import { I18nService } from '../../config/i18n.service';
 import { OsmService } from '../../services/osm.service';
@@ -249,5 +250,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   zoomOut(): void {
     this.mapService.getMap()?.zoomOut();
+  }
+
+  invalidateSize(): void {
+    this.mapService.invalidateSize();
   }
 }
