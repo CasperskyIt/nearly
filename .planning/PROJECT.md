@@ -12,7 +12,12 @@ Multiple people caring for one dog always know what it ate, its health status, a
 
 ### Validated
 
-(None yet — ship to validate)
+#### Foundation & Cleanup (Validated in Phase 1: Foundation & Cleanup, 2026-03-28)
+- [x] Supabase credentials are sourced from gitignored env files at build time via `fileReplacements`
+- [x] `HomeComponent` under 100 lines — map lifecycle in `MapComponent` + `MapService`, places display in `PlacesListComponent`
+- [x] Zero mock data, `Math.random()` ratings, or hardcoded place data in any production-compiled file
+- [x] All `console.log`/`console.error` replaced by `LoggerService` (production no-op); OSM null guard in place
+- [x] `app.component.spec.ts` passes — CI green from day one
 
 ### Active
 
@@ -105,4 +110,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-22 after initialization*
+*Last updated: 2026-03-28 — Phase 1 complete (codebase secure, decomposed, mock-free)*
