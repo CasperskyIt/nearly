@@ -25,7 +25,7 @@
 |-------|----------------|--------|-----------|
 | 1. Foundation & Cleanup | 3/3 | Complete    | 2026-03-28 |
 | 2. Authentication | 4/4 | Complete   | 2026-03-28 |
-| 3. Dog Profiles | 0/5 | Planned | — |
+| 3. Dog Profiles | 2/5 | In Progress | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
 | 5. Daily Care Tracking | 0/4 | Not started | — |
 | 6. Health Records & Reminders | 0/5 | Not started | — |
@@ -119,8 +119,8 @@ Plans:
 **Plans:** 5 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Database schema, RLS foundation, is_dog_guardian() function, storage bucket
-- [ ] 03-02-PLAN.md — DogService with CRUD + avatar upload, Dog model types, route registration
+- [x] 03-01-PLAN.md — Database schema, RLS foundation, is_dog_guardian() function, storage bucket
+- [x] 03-02-PLAN.md — DogService with CRUD + avatar upload, Dog model types, route registration
 - [ ] 03-03-PLAN.md — Dog list page and dog creation page components
 - [ ] 03-04-PLAN.md — Dog detail hub with tabs, edit modal with avatar upload, delete dialog
 - [ ] 03-05-PLAN.md — Header dog selector dropdown and full integration verification
