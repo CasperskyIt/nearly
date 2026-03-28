@@ -1,1 +1,10 @@
-<p>Account</p>
+<div class="account-container">
+  <div class="account-card">
+    <div class="avatar-circle">
+      <span class="initials">{{ getInitials() }}</span>
+    </div>
+    <h1>{{ getDisplayName() }}</h1>
+    <p class="email">{{ supabaseService.currentUser()?.email }}</p>
+    <p class="info-text">Account management coming soon. This page confirms your session is active and protected routes are working.</p>
+  </div>
+</div>

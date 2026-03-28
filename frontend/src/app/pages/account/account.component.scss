@@ -1,0 +1,43 @@
+.account-container {
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px;
+}
+
+.account-card {
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  padding: 48px 32px;
+  background: var(--color-surface, #fff);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-primary, #795548);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.initials {
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.email {
+  color: var(--color-text-secondary, #757575);
+  margin-bottom: 24px;
+}
+
+.info-text {
+  color: var(--color-text-secondary, #757575);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
