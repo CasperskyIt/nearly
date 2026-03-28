@@ -25,7 +25,7 @@
 |-------|----------------|--------|-----------|
 | 1. Foundation & Cleanup | 3/3 | Complete    | 2026-03-28 |
 | 2. Authentication | 4/4 | Complete   | 2026-03-28 |
-| 3. Dog Profiles | 0/5 | Not started | — |
+| 3. Dog Profiles | 0/5 | Planned | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
 | 5. Daily Care Tracking | 0/4 | Not started | — |
 | 6. Health Records & Reminders | 0/5 | Not started | — |
@@ -116,12 +116,14 @@ Plans:
 5. A user with no relationship to a dog receives zero rows when querying `dogs`, `care_events`, or `health_records` for that dog — confirmed by a direct supabase-js SDK query using a test user's JWT
 6. The `dog_guardians` table exists with `role`, `status`, `invite_token`, `expires_at`, and `user_id` columns; `is_dog_guardian()` RLS helper function is deployed and applied to all tables that will hold dog-specific data
 
-**Plans:** 3 plans
+**Plans:** 5 plans
 
 Plans:
-- [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
-- [ ] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
-- [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
+- [ ] 03-01-PLAN.md — Database schema, RLS foundation, is_dog_guardian() function, storage bucket
+- [ ] 03-02-PLAN.md — DogService with CRUD + avatar upload, Dog model types, route registration
+- [ ] 03-03-PLAN.md — Dog list page and dog creation page components
+- [ ] 03-04-PLAN.md — Dog detail hub with tabs, edit modal with avatar upload, delete dialog
+- [ ] 03-05-PLAN.md — Header dog selector dropdown and full integration verification
 
 **Schema established in this phase:**
 - `dogs` table with `owner_id`, `name`, `breed`, `date_of_birth`, `avatar_url`
@@ -155,7 +157,7 @@ Plans:
 5. The owner can remove a co-guardian; an active co-guardian with the app open sees a "you no longer have access" state within seconds via Realtime
 6. The `role` column is populated (`'owner'` for the creating user, `'guardian'` for invitees) on every `dog_guardians` row
 
-**Plans:** 3 plans
+**Plans:** 5 plans
 
 Plans:
 - [ ] 01-01-PLAN.md — Secure credentials and fix broken test suite
@@ -195,7 +197,7 @@ Plans:
 5. A co-guardian opens the same dog's feed on a separate device and sees a new entry from the owner appear without refreshing the page (Supabase Realtime Postgres Changes)
 6. A user with no guardian relationship to a dog receives zero rows from `care_events` for that dog — RLS is enforced at the database level, not just in the Angular service
 
-**Plans:** 3 plans
+**Plans:** 5 plans
 
 Plans:
 - [ ] 01-01-PLAN.md — Secure credentials and fix broken test suite
@@ -237,7 +239,7 @@ Plans:
 6. If a reminder has already been sent to a user, it is not sent again (the `sent` flag on the `reminders` table prevents duplicate delivery)
 7. The `reminders` table has one row per guardian per health event — not one row per dog; a dog with 2 guardians and 1 upcoming vaccination has exactly 2 reminder rows
 
-**Plans:** 3 plans
+**Plans:** 5 plans
 
 Plans:
 - [ ] 01-01-PLAN.md — Secure credentials and fix broken test suite
@@ -279,7 +281,7 @@ Plans:
 4. Each dog's summary card shows a feeding consistency indicator for today: "Fed X of Y times" derived from `care_events` where `event_type = 'feeding'` and `occurred_at` is today — X is actual entries, Y is the target set by the owner (or defaults to 2)
 5. A signed-in user can trigger account deletion from their profile settings; all their `dogs`, `dog_guardians`, `care_events`, `health_records`, and `reminders` rows are removed from Supabase
 
-**Plans:** 3 plans
+**Plans:** 5 plans
 
 Plans:
 - [ ] 01-01-PLAN.md — Secure credentials and fix broken test suite
