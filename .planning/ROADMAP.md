@@ -24,7 +24,7 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Cleanup | 3/3 | Complete    | 2026-03-28 |
-| 2. Authentication | 0/4 | Not started | — |
+| 2. Authentication | 0/3 | Not started | — |
 | 3. Dog Profiles | 0/5 | Not started | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
 | 5. Daily Care Tracking | 0/4 | Not started | — |
@@ -85,9 +85,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
-- [x] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
-- [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
+- [ ] 02-01-PLAN.md — Auth service layer, guards, app config, and route wiring
+- [ ] 02-02-PLAN.md — Login page, auth callback, and account page components
+- [ ] 02-03-PLAN.md — Header auth UI with avatar dropdown and sign-out confirmation
 
 **Pitfalls addressed in this phase:**
 - Pitfall 4 (session not restored on hard refresh) — use `APP_INITIALIZER` to resolve auth state before routing evaluates guards
