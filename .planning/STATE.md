@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-28T09:49:30.960Z"
+last_updated: "2026-03-28T09:52:40.040Z"
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Dogly — Project State
@@ -72,3 +72,5 @@ Phase 02 — Authentication in progress (1/3 plans complete).
 - [Phase 02-01]: Stub page components (login, auth-callback, account) created to unblock compilation — full implementation in Plan 02-02
 - [Phase 02-01]: provideAppInitializer calls initSession() to hydrate currentUser signal before any route guard runs
 - [Phase 02-01]: authGuard uses router.parseUrl() (UrlTree) not imperative navigate() for correct guard return pattern
+- [Phase 02-authentication]: themeService.theme (public getter) used instead of themeService.currentTheme (private signal) for template access in HeaderComponent
+- [Phase 02-authentication]: SignOutConfirmDialog defined in same file as HeaderComponent — acceptable for small inline-dialog components
