@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-28T07:32:27.342Z"
+last_updated: "2026-03-28T07:37:01.581Z"
 progress:
   total_phases: 7
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Dogly — Project State
@@ -18,7 +18,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-22)
 
 **Core value:** Multiple people caring for one dog always know what it ate, its health status, and what's coming up — no guessing, no missed medications.
-**Current focus:** Phase 01 — foundation-cleanup
+**Current focus:** Phase 02 — Authentication
 
 ## Milestone
 
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | Foundation & Cleanup | ○ Pending |
+| 1 | Foundation & Cleanup | ✓ Complete |
 | 2 | Authentication | ○ Pending |
 | 3 | Dog Profiles | ○ Pending |
 | 4 | Co-Guardians | ○ Pending |
@@ -38,9 +38,9 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 
 ## Active Work
 
-Executing Phase 01 — foundation-cleanup. Plan 01-01 complete.
+Phase 01 — foundation-cleanup complete (3/3 plans). Ready for Phase 02 — Authentication.
 
-**Last stopped at:** Completed 01-01-PLAN.md (credentials security & test fix)
+**Last stopped at:** Completed 01-03-PLAN.md (logger, null guard, mock data sweep)
 
 ## Key Context
 
@@ -65,3 +65,5 @@ Executing Phase 01 — foundation-cleanup. Plan 01-01 complete.
 
 - [Phase 01-foundation-cleanup]: MapService owns Leaflet state; MapComponent delegates all map operations to it via service methods
 - [Phase 01-foundation-cleanup]: getCategoryColor/Icon/Label as arrow function properties on HomeComponent to avoid Angular template type errors with optional chaining bind()
+- [Phase 01-foundation-cleanup]: LoggerService uses environment.production flag — no-op in prod, delegates to console in dev
+- [Phase 01-foundation-cleanup]: OSM null guard: response?.elements ?? [] before .map() prevents crash on empty Overpass responses

@@ -9,7 +9,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & Cleanup** — Rotate leaked credentials, extract HomeComponent god object, remove mock data and console logs
+- [x] **Phase 1: Foundation & Cleanup** — Rotate leaked credentials, extract HomeComponent god object, remove mock data and console logs (completed 2026-03-28)
 - [ ] **Phase 2: Authentication** — Google OAuth login, persistent session across refresh, protected routes
 - [ ] **Phase 3: Dog Profiles** — Full dog CRUD, avatar upload, multi-dog switcher, RLS foundation
 - [ ] **Phase 4: Co-Guardians** — Token-based invite flow, email via Resend Edge Function, guardian management
@@ -23,7 +23,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Cleanup | 1/3 | In Progress|  |
+| 1. Foundation & Cleanup | 3/3 | Complete   | 2026-03-28 |
 | 2. Authentication | 0/4 | Not started | — |
 | 3. Dog Profiles | 0/5 | Not started | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
@@ -50,12 +50,12 @@
 4. All `console.log` / `console.error` calls are replaced by an `environment.production`-gated `LoggerService`; the OSM service `response.elements` null guard is in place
 5. `app.component.spec.ts` passes (or is deleted and replaced with a stub that passes) so CI is not broken from day one
 
-**Plans:** 1/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
 - [x] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
-- [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
+- [x] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
 
 **Pitfalls addressed in this phase:**
 - Pitfall 3 (anon key in git) — BLOCKING, must resolve before auth
@@ -86,7 +86,7 @@ Plans:
 
 Plans:
 - [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
-- [ ] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
+- [x] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
 - [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
 
 **Pitfalls addressed in this phase:**
@@ -119,7 +119,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Secure credentials and fix broken test suite
+- [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
 - [ ] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
 - [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
 
