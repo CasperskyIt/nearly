@@ -23,7 +23,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Cleanup | 0/3 | Not started | — |
+| 1. Foundation & Cleanup | 1/3 | In Progress|  |
 | 2. Authentication | 0/4 | Not started | — |
 | 3. Dog Profiles | 0/5 | Not started | — |
 | 4. Co-Guardians | 0/5 | Not started | — |
@@ -50,10 +50,10 @@
 4. All `console.log` / `console.error` calls are replaced by an `environment.production`-gated `LoggerService`; the OSM service `response.elements` null guard is in place
 5. `app.component.spec.ts` passes (or is deleted and replaced with a stub that passes) so CI is not broken from day one
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
-- [ ] 01-01-PLAN.md — Secure credentials and fix broken test suite
+- [x] 01-01-PLAN.md — Secure credentials and fix broken test suite
 - [ ] 01-02-PLAN.md — Decompose HomeComponent into MapComponent, MapService, and presentational PlacesListComponent
 - [ ] 01-03-PLAN.md — Create LoggerService, replace console calls, add OSM null guard, final mock data sweep
 
