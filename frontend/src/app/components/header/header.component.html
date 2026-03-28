@@ -1,3 +1,30 @@
 <mat-toolbar color="primary">
-  <span>Nearly</span>
+  <button mat-icon-button (click)="menuClick.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{ themeService.theme?.strings?.appName ?? 'Nearly' }}</span>
+
+  <span class="spacer"></span>
+
+  @if (supabase.currentUser() === null) {
+    <button mat-button class="sign-in-link" (click)="onSignIn()">
+      Sign in
+    </button>
+  } @else {
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="avatar-button">
+      <div class="avatar-circle">
+        <span class="avatar-initials">{{ getInitials() }}</span>
+      </div>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="onMyAccount()">
+        <mat-icon>person</mat-icon>
+        <span>My Account</span>
+      </button>
+      <button mat-menu-item (click)="onSignOut()">
+        <mat-icon>logout</mat-icon>
+        <span>Sign out</span>
+      </button>
+    </mat-menu>
+  }
 </mat-toolbar>
