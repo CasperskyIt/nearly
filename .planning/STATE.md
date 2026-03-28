@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-28T09:48:02.589Z"
+last_updated: "2026-03-28T09:49:30.960Z"
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 7
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Dogly — Project State
@@ -38,9 +38,9 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 
 ## Active Work
 
-Phase 01 — foundation-cleanup complete (3/3 plans). Ready for Phase 02 — Authentication.
+Phase 02 — Authentication in progress (1/3 plans complete).
 
-**Last stopped at:** Completed 01-03-PLAN.md (logger, null guard, mock data sweep)
+**Last stopped at:** Completed 02-01-PLAN.md (auth service foundation — currentUser signal, PKCE OAuth, route guards, provideAppInitializer)
 
 ## Key Context
 
@@ -69,3 +69,6 @@ Phase 01 — foundation-cleanup complete (3/3 plans). Ready for Phase 02 — Aut
 - [Phase 01-foundation-cleanup]: OSM null guard: response?.elements ?? [] before .map() prevents crash on empty Overpass responses
 - [Phase 02-authentication]: Spec files for not-yet-existing source files omit top-level imports to prevent TS2307 compilation errors — later plan executors add real imports when implementing
 - [Phase 02-authentication]: All placeholder tests use xit() (not it()) so Karma reports them as skipped, not pending failures
+- [Phase 02-01]: Stub page components (login, auth-callback, account) created to unblock compilation — full implementation in Plan 02-02
+- [Phase 02-01]: provideAppInitializer calls initSession() to hydrate currentUser signal before any route guard runs
+- [Phase 02-01]: authGuard uses router.parseUrl() (UrlTree) not imperative navigate() for correct guard return pattern
