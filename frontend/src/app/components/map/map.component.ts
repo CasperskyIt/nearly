@@ -8,6 +8,7 @@ import {
   inject,
   PLATFORM_ID,
 } from '@angular/core';
+import { LoggerService } from '../../services/logger.service';
 import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SecurityContext } from '@angular/core';
@@ -32,6 +33,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private osmService = inject(OsmService);
   private sanitizer = inject(DomSanitizer);
   private platformId = inject(PLATFORM_ID);
+  private logger = inject(LoggerService);
 
   // Signal inputs
   selectedCategories = input<Set<string>>(new Set());
@@ -202,7 +204,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.loadingChange.emit(false);
       },
       error: (err) => {
-        console.error('Error loading OSM places:', err);
+        this.logger.error('Error loading OSM places:', err);
         this.loadingChange.emit(false);
       },
     });

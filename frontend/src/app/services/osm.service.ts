@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { LoggerService } from './logger.service';
 
 export interface OsmPlace {
   id: number;
@@ -16,6 +17,7 @@ export interface OsmPlace {
 })
 export class OsmService {
   private overpassUrl = 'https://overpass-api.de/api/interpreter';
+  private logger = inject(LoggerService);
 
   constructor(private http: HttpClient) {}
 
@@ -47,7 +49,7 @@ export class OsmService {
           observer.complete();
         },
         error: (err) => {
-          console.error('OSM Error:', err);
+          this.logger.error('OSM Error:', err);
           observer.error(err);
         }
       });
@@ -83,7 +85,7 @@ export class OsmService {
           observer.complete();
         },
         error: (err) => {
-          console.error('OSM Error:', err);
+          this.logger.error('OSM Error:', err);
           observer.error(err);
         }
       });

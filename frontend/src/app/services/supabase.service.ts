@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { LoggerService } from './logger.service';
 
 export interface Place {
   id: string;
@@ -31,7 +32,8 @@ export interface Review {
 })
 export class SupabaseService {
   supabase: SupabaseClient;
-  
+  private logger = inject(LoggerService);
+
   places = signal<Place[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
@@ -61,7 +63,7 @@ export class SupabaseService {
       return data || [];
     } catch (err: any) {
       this.error.set(err.message);
-      console.error('Error fetching places:', err);
+      this.logger.error('Error fetching places:', err);
       return [];
     } finally {
       this.loading.set(false);
