@@ -148,6 +148,18 @@ None beyond the three auto-fixed build errors above.
 - MapComponent is fully encapsulated — dark mode, geolocation, markers all self-contained
 - PlacesListComponent accepts any Place[] via signal input — ready for Supabase data source
 
+## Self-Check: PASSED
+
+- FOUND: frontend/src/app/services/map.service.ts
+- FOUND: frontend/src/app/components/map/map.component.ts
+- FOUND: frontend/src/app/components/map/map.component.html
+- FOUND: frontend/src/app/components/map/map.component.scss
+- FOUND: frontend/src/app/components/places-list/places-list.component.ts
+- FOUND: frontend/src/app/pages/home/home.component.ts
+- FOUND: .planning/phases/01-foundation-cleanup/01-02-SUMMARY.md
+- FOUND commit: 40a2753 (Task 1)
+- FOUND commit: f80f99f (Task 2)
+
 ---
 *Phase: 01-foundation-cleanup*
 *Completed: 2026-03-28*
