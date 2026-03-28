@@ -38,19 +38,21 @@ created: 2026-03-28
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 2-01-01 | 01 | 0 | AUTH-01 | manual | Supabase dashboard redirect URL config | ❌ W0 | ⬜ pending |
-| 2-01-02 | 01 | 1 | AUTH-01 | unit | `npm test -- --include=**/supabase.service.spec*` | ❌ W0 | ⬜ pending |
-| 2-02-01 | 02 | 1 | AUTH-01 | unit | `npm test -- --include=**/login*.spec*` | ❌ W0 | ⬜ pending |
-| 2-02-02 | 02 | 1 | AUTH-03 | unit | `npm test -- --include=**/auth-callback*.spec*` | ❌ W0 | ⬜ pending |
-| 2-03-01 | 03 | 1 | AUTH-02 | unit | `npm test -- --include=**/auth*.guard.spec*` | ❌ W0 | ⬜ pending |
-| 2-03-02 | 03 | 1 | AUTH-04 | unit | `npm test -- --include=**/header*.spec*` | ❌ W0 | ⬜ pending |
-| 2-03-03 | 03 | 2 | AUTH-02 | unit | `npm test -- --include=**/app.config.spec*` | ❌ W0 | ⬜ pending |
+| 2-00-01 | 00 | 0 | AUTH-01..04 | scaffold | `npm test -- --watch=false --browsers=ChromeHeadless` | Created by 02-00 | pending |
+| 2-01-01 | 01 | 1 | AUTH-01 | unit | `npm test -- --include=**/supabase.service.spec*` | Created by 02-00 | pending |
+| 2-01-02 | 01 | 1 | AUTH-02 | unit | `npm test -- --include=**/auth*.guard.spec*` | Created by 02-00 | pending |
+| 2-02-01 | 02 | 2 | AUTH-01 | unit | `npm test -- --include=**/login*.spec*` | Created by 02-00 | pending |
+| 2-02-02 | 02 | 2 | AUTH-03 | unit | `npm test -- --include=**/auth-callback*.spec*` | Created by 02-00 | pending |
+| 2-03-01 | 03 | 2 | AUTH-04 | unit | `npm test -- --include=**/header*.spec*` | Created by 02-00 | pending |
+| 2-03-02 | 03 | 2 | AUTH-02 | manual | Full OAuth round-trip (human verify) | N/A | pending |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+*Status: pending -- green -- red -- flaky*
 
 ---
 
 ## Wave 0 Requirements
+
+Fulfilled by **02-00-PLAN.md** (Wave 0):
 
 - [ ] `frontend/src/app/services/supabase.service.spec.ts` — auth state signal + signInWithOAuth + signOut stubs
 - [ ] `frontend/src/app/guards/auth.guard.spec.ts` — guard redirect stubs for AUTH-02
@@ -74,7 +76,7 @@ created: 2026-03-28
 
 - [ ] All tasks have `<automated>` verify or Wave 0 dependencies
 - [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
+- [ ] Wave 0 covers all MISSING references (fulfilled by 02-00-PLAN.md)
 - [ ] No watch-mode flags
 - [ ] Feedback latency < 30s
 - [ ] `nyquist_compliant: true` set in frontmatter
