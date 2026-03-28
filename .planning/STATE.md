@@ -8,7 +8,7 @@ progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 12
-  completed_plans: 9
+  completed_plans: 11
 ---
 
 # Dogly — Project State
@@ -30,7 +30,8 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 |-------|------|--------|
 | 1 | Foundation & Cleanup | ✓ Complete |
 | 2 | Authentication | ✓ Complete |
-| 3 | Dog Profiles | ◐ In Progress (2/5) |
+| 3 | Dog Profiles | ◐ In Progress (3/5) |
+| 3 | Dog Profiles | ◐ In Progress (4/5) |
 | 4 | Co-Guardians | ○ Pending |
 | 5 | Daily Care Tracking | ○ Pending |
 | 6 | Health Records & Reminders | ○ Pending |
@@ -40,7 +41,7 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 
 Phase 03 — Dog Profiles in progress (2/5 plans complete).
 
-**Last stopped at:** Completed 03-02-PLAN.md (DogService with CRUD, avatar upload, signals, routes, and stub components)
+**Last stopped at:** Completed 03-04-PLAN.md (Dog Detail Hub with tabbed layout, edit/delete dialogs, avatar upload)
 
 ## Key Context
 
