@@ -35,3 +35,39 @@ mat-toolbar {
   font-size: 0.875rem;
   font-weight: 600;
 }
+
+.dog-selector {
+  margin-left: 12px;
+}
+
+.dog-selector-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dog-selector-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dog-selector-icon {
+  font-size: 20px;
+}
+
+.dog-selector-name {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-dog-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}

@@ -4,14 +4,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SupabaseService } from '../../services/supabase.service';
 import { ThemeService } from '../../config/theme.service';
+import { DogService } from '../../services/dog.service';
+import { Dog } from '../../models/dog.model';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatMenuModule, MatDialogModule, RouterLink],
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatMenuModule, MatDividerModule, MatDialogModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -19,6 +22,7 @@ export class HeaderComponent {
   menuClick = output<void>();
 
   protected supabase = inject(SupabaseService);
+  protected dogService = inject(DogService);
   private router = inject(Router);
   private dialog = inject(MatDialog);
   protected themeService = inject(ThemeService);
@@ -55,6 +59,15 @@ export class HeaderComponent {
 
   protected onMyAccount(): void {
     this.router.navigate([`/${this.getAppPrefix()}/account`]);
+  }
+
+  protected onSelectDog(dog: Dog): void {
+    this.dogService.setCurrentDog(dog);
+    this.router.navigate([`/${this.getAppPrefix()}/dogs/${dog.id}`]);
+  }
+
+  protected onMyDogs(): void {
+    this.router.navigate([`/${this.getAppPrefix()}/dogs`]);
   }
 }
 

@@ -4,6 +4,38 @@
   </button>
   <span>{{ themeService.theme?.strings?.appName ?? 'Nearly' }}</span>
 
+  <!-- Dog selector (per D-03) -->
+  @if (supabase.currentUser() && dogService.dogs().length > 0) {
+    <button mat-button [matMenuTriggerFor]="dogMenu" class="dog-selector">
+      <div class="dog-selector-content">
+        @if (dogService.currentDog()?.avatar_url) {
+          <img [src]="dogService.currentDog()!.avatar_url" class="dog-selector-avatar" alt="" />
+        } @else {
+          <mat-icon class="dog-selector-icon">pets</mat-icon>
+        }
+        <span class="dog-selector-name">{{ dogService.currentDog()?.name ?? 'Select Dog' }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </div>
+    </button>
+    <mat-menu #dogMenu="matMenu">
+      @for (dog of dogService.dogs(); track dog.id) {
+        <button mat-menu-item (click)="onSelectDog(dog)">
+          @if (dog.avatar_url) {
+            <img [src]="dog.avatar_url" class="menu-dog-avatar" alt="" />
+          } @else {
+            <mat-icon>pets</mat-icon>
+          }
+          <span>{{ dog.name }}</span>
+        </button>
+      }
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="onMyDogs()">
+        <mat-icon>list</mat-icon>
+        <span>All Dogs</span>
+      </button>
+    </mat-menu>
+  }
+
   <span class="spacer"></span>
 
   @if (supabase.currentUser() === null) {
@@ -20,6 +52,10 @@
       <button mat-menu-item (click)="onMyAccount()">
         <mat-icon>person</mat-icon>
         <span>My Account</span>
+      </button>
+      <button mat-menu-item (click)="onMyDogs()">
+        <mat-icon>pets</mat-icon>
+        <span>My Dogs</span>
       </button>
       <button mat-menu-item (click)="onSignOut()">
         <mat-icon>logout</mat-icon>
