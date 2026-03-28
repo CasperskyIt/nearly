@@ -36,7 +36,8 @@ export class OsmService {
     return new Observable(observer => {
       this.http.post<any>(this.overpassUrl, query).subscribe({
         next: (response) => {
-          const places: OsmPlace[] = response.elements.map((el: any) => ({
+          const elements = response?.elements ?? [];
+          const places: OsmPlace[] = elements.map((el: any) => ({
             id: el.id,
             name: el.tags.name || 'Bez nazwy',
             lat: el.lat,
@@ -72,7 +73,8 @@ export class OsmService {
     return new Observable(observer => {
       this.http.post<any>(this.overpassUrl, query).subscribe({
         next: (response) => {
-          const places: OsmPlace[] = response.elements.map((el: any) => ({
+          const elements = response?.elements ?? [];
+          const places: OsmPlace[] = elements.map((el: any) => ({
             id: el.id,
             name: el.tags.name || 'Bez nazwy',
             lat: el.lat || el.center?.lat,
