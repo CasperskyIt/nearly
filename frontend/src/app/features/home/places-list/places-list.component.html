@@ -1,0 +1,32 @@
+@if (isLoading()) {
+  <div class="loader-container">
+    <div class="spinner"></div>
+    <p>{{ t.places.loading }}</p>
+  </div>
+} @else if (places().length === 0) {
+  <div class="empty-state">
+    <span class="material-icon empty-icon">location_off</span>
+    <p class="empty-title">{{ t.places.notFound }}</p>
+    <p class="empty-subtitle">{{ t.places.notFoundHint }}</p>
+  </div>
+} @else {
+  @for (place of places(); track place.id) {
+    <div
+      class="place-card"
+      [class.selected]="selectedPlace()?.id === place.id"
+      [attr.data-id]="place.id"
+      (click)="onSelectPlace(place)">
+      <div class="place-image" [style.background-color]="getCategoryColor()(place.category)">
+        <span class="material-icon">{{ getCategoryIcon()(place.category) }}</span>
+      </div>
+      <div class="place-details">
+        <h3>{{ place.name }}</h3>
+        <p class="place-category">{{ getCategoryLabel()(place.category) }}</p>
+        <div class="place-rating">
+          <span class="material-icon star">star</span>
+          <span>{{ place.rating.toFixed(1) }}</span>
+        </div>
+      </div>
+    </div>
+  }
+}

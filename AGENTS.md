@@ -1,8 +1,8 @@
-# Nearly - Development Guidelines
+# Dogly - Development Guidelines
 
 ## Project Overview
 
-Nearly is a location-based discovery app that helps users find micro-adventures nearby (coffee spots, parks, viewpoints, street art, etc.).
+Dogly is a location-based discovery app that helps users find micro-adventures nearby (coffee spots, parks, viewpoints, street art, etc.).
 
 - **Frontend**: Angular
 - **Backend**: Spring Boot (Java 21)
@@ -26,10 +26,10 @@ Nearly is a location-based discovery app that helps users find micro-adventures 
 ./mvnw test
 
 # Run a single test class
-./mvnw test -Dtest=NearlyBackendApplicationTests
+./mvnw test -Dtest=DoglyBackendApplicationTests
 
 # Run a single test method
-./mvnw test -Dtest=NearlyBackendApplicationTests#contextLoads
+./mvnw test -Dtest=DoglyBackendApplicationTests#contextLoads
 
 # Run tests with verbose output
 ./mvnw test -Dsurefire.useFile=false
@@ -61,7 +61,7 @@ Nearly is a location-based discovery app that helps users find micro-adventures 
 | Methods | camelCase | `getPlacesNearby()`, `savePlace()` |
 | Variables | camelCase | `placeList`, `userLocation` |
 | Constants | UPPER_SNAKE_CASE | `MAX_RADIUS_KM`, `DEFAULT_PAGE_SIZE` |
-| Packages | lowercase | `com.casperskyIt.nearly_backend.controller` |
+| Packages | lowercase | `com.casperskyIt.dogly.controller` |
 | DTOs | Sufix with DTO | `PlaceDTO`, `LocationDTO` |
 | Entities | No suffix | `Place`, `User` |
 
@@ -75,11 +75,13 @@ Nearly is a location-based discovery app that helps users find micro-adventures 
 
 ```java
 // Package declaration
-package com.casperskyIt.nearly_backend.controller;
+package com.casperskyIt.dogly.controller;
 
 // Imports - organized: static, java, javax, spring, third-party
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 // Class with Lombok - avoid redundant annotations
@@ -87,9 +89,9 @@ import java.util.List;
 @RequestMapping("/api/v1/places")
 @RequiredArgsConstructor
 public class PlaceController {
-    
+
     private final PlaceService placeService;
-    
+
     @GetMapping
     public ResponseEntity<List<PlaceDTO>> getNearbyPlaces(
             @RequestParam Double lat,
@@ -263,16 +265,16 @@ class PlaceServiceTest {
 
 ```properties
 # application.properties or application.yml
-spring.application.name=nearly-backend
+spring.application.name=dogly-backend
 server.port=8080
 
 # Database configuration
-spring.datasource.url=jdbc:postgresql://localhost:5432/nearly
+spring.datasource.url=jdbc:postgresql://localhost:5432/dogly
 spring.datasource.username=${DB_USER}
 spring.datasource.password=${DB_PASSWORD}
 
 # Logging
-logging.level.com.caspberryIt.nearly_backend=DEBUG
+logging.level.com.caspberryIt.dogly_backend=DEBUG
 ```
 
 ### Project Structure
@@ -280,7 +282,7 @@ logging.level.com.caspberryIt.nearly_backend=DEBUG
 ```
 src/
 ├── main/
-│   ├── java/com/casperskyIt/nearly_backend/
+│   ├── java/com/casperskyIt/dogly_backend/
 │   │   ├── config/           # Configuration classes
 │   │   ├── controller/        # REST controllers
 │   │   ├── service/           # Business logic
@@ -288,11 +290,11 @@ src/
 │   │   ├── entity/            # JPA entities
 │   │   ├── dto/               # Data transfer objects
 │   │   ├── exception/         # Custom exceptions
-│   │   └── NearlyBackendApplication.java
+│   │   └── DoglyBackendApplication.java
 │   └── resources/
 │       └── application.yml
 └── test/
-    └── java/com/casperskyIt/nearly_backend/
+    └── java/com/casperskyIt/dogly_backend/
         └── service/           # Unit tests
 ```
 

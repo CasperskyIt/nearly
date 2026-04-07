@@ -1,0 +1,214 @@
+<!-- Loading state -->
+@if (loading()) {
+  <div class="detail-skeleton">
+    <aside class="skeleton-left">
+      <div class="sk-avatar"></div>
+      <div class="sk-line wide"></div>
+      <div class="sk-line narrow"></div>
+    </aside>
+    <div class="skeleton-right">
+      <div class="sk-tabs"></div>
+      <div class="sk-block tall"></div>
+    </div>
+  </div>
+}
+
+<!-- Two-column layout -->
+@if (!loading() && dog()) {
+  <div class="detail-layout">
+
+    <!-- ══════════ LEFT PANEL ══════════ -->
+    <aside class="dog-left">
+      <button class="btn-back" (click)="onBack()" [title]="t.dogs.cancel">
+        <span class="material-icon">arrow_back</span>
+      </button>
+
+      <!-- Avatar -->
+      <div class="dog-avatar">
+        @if (dog()!.avatar_url) {
+          <img [src]="dog()!.avatar_url" [alt]="dog()!.name" class="avatar-img" />
+        } @else {
+          <span class="material-icon avatar-fallback">pets</span>
+        }
+      </div>
+
+      <!-- Identity -->
+      <h1 class="dog-name">{{ dog()!.name }}</h1>
+      @if (dog()!.breed) {
+        <p class="dog-breed">{{ dog()!.breed }}</p>
+      }
+
+      <!-- Info rows -->
+      <div class="dog-info">
+        @if (dog()!.date_of_birth) {
+          <div class="info-row">
+            <span class="material-icon info-icon">cake</span>
+            <span class="info-text">{{ formatDate(dog()!.date_of_birth) }}</span>
+          </div>
+        }
+        <div class="info-row">
+          <span class="material-icon info-icon">group</span>
+          <span class="info-text">{{ guardians().length }} opiekunów</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="dog-actions">
+        <button class="btn-action btn-primary-sm" (click)="onEdit()">
+          <span class="material-icon">edit</span>
+          {{ t.dogs.edit }}
+        </button>
+        <button class="btn-action btn-danger-sm" (click)="onDelete()">
+          <span class="material-icon">delete</span>
+          {{ t.dogs.delete }}
+        </button>
+      </div>
+    </aside>
+
+    <!-- ══════════ RIGHT PANEL ══════════ -->
+    <div class="dog-right">
+      <!-- Tab bar -->
+      <div class="tabs">
+        <button class="tab-btn" [class.active]="activeTab() === 'calendar'" (click)="setTab('calendar')">
+          <span class="material-icon">calendar_month</span>
+          {{ t.dogs.careTabCalendar }}
+        </button>
+        <button class="tab-btn" [class.active]="activeTab() === 'care'" (click)="setTab('care')">
+          <span class="material-icon">spa</span>
+          {{ t.dogs.tabCare }}
+        </button>
+        <button class="tab-btn" [class.active]="activeTab() === 'health'" (click)="setTab('health')">
+          <span class="material-icon">medical_services</span>
+          {{ t.dogs.tabHealth }}
+        </button>
+        <button class="tab-btn" [class.active]="activeTab() === 'coguardians'" (click)="setTab('coguardians')">
+          <span class="material-icon">group</span>
+          {{ t.dogs.tabCoGuardians }}
+        </button>
+      </div>
+
+      <!-- Tab content -->
+      <div class="tab-content">
+
+        @if (activeTab() === 'calendar') {
+          <app-dog-month-calendar [dogId]="dog()!.id" />
+        }
+
+        @if (activeTab() === 'care') {
+          <app-dog-care-tab [dogId]="dog()!.id" />
+        }
+
+        @if (activeTab() === 'health') {
+          <div class="empty-tab">
+            <span class="material-icon empty-tab-icon">medical_services</span>
+            <p>{{ t.dogs.noHealthRecords }}</p>
+            <p class="empty-tab-hint">{{ t.dogs.healthHint }}</p>
+          </div>
+        }
+
+        @if (activeTab() === 'coguardians') {
+          @if (guardians().length === 0) {
+            <div class="empty-tab">
+              <span class="material-icon empty-tab-icon">group</span>
+              <p>{{ t.dogs.noCoGuardians }}</p>
+              <p class="empty-tab-hint">{{ t.dogs.coGuardiansHint }}</p>
+            </div>
+          } @else {
+            <div class="guardian-list">
+              @for (guardian of guardians(); track guardian.id) {
+                <div class="guardian-item">
+                  <span class="material-icon">person</span>
+                  <div class="guardian-info">
+                    <span class="guardian-role">{{ guardian.role }}</span>
+                    <span class="guardian-status">{{ guardian.status }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        }
+
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ══════════ EDIT MODAL ══════════ -->
+@if (showEditModal()) {
+  <div class="modal-backdrop" (click)="closeEditModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">{{ t.dogs.edit }} {{ dog()?.name }}</h3>
+
+      <form [formGroup]="editForm" class="edit-form">
+        <div class="avatar-upload-section">
+          <div class="avatar-preview" (click)="fileInput.click()">
+            @if (avatarPreview()) {
+              <img [src]="avatarPreview()" alt="Podgląd" class="preview-img" />
+            } @else if (dog()?.avatar_url) {
+              <img [src]="dog()!.avatar_url" alt="Aktualne zdjęcie" class="preview-img" />
+            } @else {
+              <span class="material-icon upload-placeholder">add_a_photo</span>
+            }
+          </div>
+          <input #fileInput type="file" accept="image/jpeg,image/png,image/webp" (change)="onFileSelected($event)" hidden />
+          <button type="button" class="btn-outline btn-sm" (click)="fileInput.click()">
+            {{ dog()?.avatar_url || avatarPreview() ? 'Zmień zdjęcie' : 'Dodaj zdjęcie' }}
+          </button>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="form-row">
+          <label class="field-label" for="edit-name">{{ t.dogs.name }}</label>
+          <div class="field-col">
+            <input id="edit-name" class="field-input" formControlName="name" [placeholder]="t.dogs.namePlaceholder" />
+            @if (editForm.get('name')?.hasError('required') && editForm.get('name')?.touched) {
+              <span class="field-error">{{ t.dogs.nameRequired }}</span>
+            }
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="form-row">
+          <label class="field-label" for="edit-breed">{{ t.dogs.breed }}</label>
+          <input id="edit-breed" class="field-input" formControlName="breed" [placeholder]="t.dogs.breedPlaceholder" />
+        </div>
+
+        <hr class="divider" />
+
+        <div class="form-row">
+          <label class="field-label">{{ t.dogs.dateOfBirth }}</label>
+          <app-date-picker formControlName="dateOfBirth" [includeTime]="false" [placeholder]="t.dogs.datePlaceholder" />
+        </div>
+
+        @if (editError()) {
+          <p class="field-error">{{ editError() }}</p>
+        }
+      </form>
+
+      <div class="modal-actions">
+        <button class="btn-outline" (click)="closeEditModal()" [disabled]="saving()">{{ t.dogs.cancel }}</button>
+        <button class="btn-primary" (click)="onSave()" [disabled]="saving()">
+          @if (saving()) { <div class="spinner-sm"></div> } @else { Zapisz }
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ══════════ DELETE MODAL ══════════ -->
+@if (showDeleteModal()) {
+  <div class="modal-backdrop" (click)="closeDeleteModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">{{ t.dogs.delete }} {{ dog()?.name }}?</h3>
+      <p class="modal-body">Tej operacji nie można cofnąć. Wszystkie dane psa zostaną trwale usunięte.</p>
+      <div class="modal-actions">
+        <button class="btn-outline" (click)="closeDeleteModal()" [disabled]="deleting()">{{ t.dogs.cancel }}</button>
+        <button class="btn-danger" (click)="confirmDelete()" [disabled]="deleting()">
+          @if (deleting()) { <div class="spinner-sm"></div> } @else { {{ t.dogs.delete }} }
+        </button>
+      </div>
+    </div>
+  </div>
+}

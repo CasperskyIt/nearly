@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/nearly.iml" filepath="$PROJECT_DIR$/.idea/nearly.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dogly.iml" filepath="$PROJECT_DIR$/.idea/dogly.iml" />
     </modules>
   </component>
 </project>

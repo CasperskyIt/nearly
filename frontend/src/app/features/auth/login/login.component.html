@@ -1,0 +1,38 @@
+<div class="login-container">
+  <div class="branding-panel">
+    <div class="branding-content">
+      @if (theme.logo) {
+        <div class="logo" [innerHTML]="theme.logo"></div>
+      } @else {
+        <span class="material-icon logo-icon">{{ theme.icons.logo }}</span>
+      }
+      <h1 class="app-name">{{ theme.strings.appName }}</h1>
+      <p class="tagline">{{ tagline() }}</p>
+    </div>
+  </div>
+  <div class="signin-panel">
+    <div class="signin-card">
+      @if (theme.logo) {
+        <div class="card-logo" [innerHTML]="theme.logo"></div>
+      }
+      <h2>{{ t.common.welcome }}</h2>
+      <p class="subtitle">{{ t.common.signInToContinue }}</p>
+
+      @if (errorMessage()) {
+        <div class="error-message">{{ errorMessage() }}</div>
+      }
+
+      <button
+        class="google-btn"
+        (click)="signIn()"
+        [disabled]="loading()">
+        @if (loading()) {
+          <div class="spinner-sm"></div>
+        } @else {
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
+          {{ t.common.signInWithGoogle }}
+        }
+      </button>
+    </div>
+  </div>
+</div>

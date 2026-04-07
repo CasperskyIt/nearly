@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "nearly-frontend": {
+    "dogly-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/nearly-frontend",
+            "outputPath": "dist/dogly-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "nearly-frontend:build:production"
+              "buildTarget": "dogly-frontend:build:production"
             },
             "development": {
-              "buildTarget": "nearly-frontend:build:development"
+              "buildTarget": "dogly-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"

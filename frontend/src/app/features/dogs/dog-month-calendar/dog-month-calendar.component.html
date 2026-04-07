@@ -1,0 +1,139 @@
+<div class="month-calendar">
+
+  <!-- Navigation header -->
+  <div class="cal-header">
+    <button class="cal-nav" (click)="prevMonth()" aria-label="Poprzedni miesiąc">
+      <span class="material-icon">chevron_left</span>
+    </button>
+    <div class="cal-header-center">
+      <h3 class="cal-month-label">{{ monthLabel() }}</h3>
+      @if (!isCurrentMonthView()) {
+        <button class="cal-today-btn" (click)="goToToday()">Dziś</button>
+      }
+    </div>
+    <button class="cal-nav" (click)="nextMonth()" aria-label="Następny miesiąc">
+      <span class="material-icon">chevron_right</span>
+    </button>
+  </div>
+
+  @if (loading()) {
+    <!-- Skeleton -->
+    <div class="cal-skeleton">
+      <div class="cal-weekdays">
+        @for (i of [1,2,3,4,5,6,7]; track i) {
+          <div class="cal-weekday sk-block"></div>
+        }
+      </div>
+      <div class="cal-grid">
+        @for (i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]; track i) {
+          <div class="cal-cell sk-cell"></div>
+        }
+      </div>
+    </div>
+  } @else {
+    <!-- Weekday headers -->
+    <div class="cal-weekdays">
+      @for (label of weekDayLabels; track label) {
+        <div class="cal-weekday">{{ label }}</div>
+      }
+    </div>
+
+    <!-- Day grid -->
+    <div class="cal-grid">
+      @for (cell of calendarCells(); track cell.dateKey) {
+        <button
+          class="cal-cell"
+          [class.other-month]="!cell.isCurrentMonth"
+          [class.today]="cell.isToday"
+          [class.selected]="selectedDateKey() === cell.dateKey"
+          [class.has-logged]="cell.loggedCount > 0"
+          [class.has-scheduled]="cell.scheduledCount > 0"
+          [disabled]="!cell.isCurrentMonth"
+          (click)="selectDay(cell)">
+          <span class="cal-day-num">{{ cell.dayNum }}</span>
+          <div class="cal-dots">
+            @if (cell.loggedCount > 0) {
+              <span class="dot dot-logged" [title]="cell.loggedCount + ' wpis(ów)'"></span>
+            }
+            @if (cell.scheduledCount > 0) {
+              <span class="dot dot-scheduled" [title]="t.dogs.careToDo"></span>
+            }
+          </div>
+        </button>
+      }
+    </div>
+
+    <!-- Legend -->
+    <div class="cal-legend">
+      <span class="legend-item">
+        <span class="dot dot-logged"></span> Wykonano
+      </span>
+      <span class="legend-item">
+        <span class="dot dot-scheduled"></span> {{ t.dogs.careToDo }}
+      </span>
+    </div>
+
+    <!-- Selected day detail -->
+    @if (selectedDayData(); as data) {
+      <div class="day-detail">
+        <h4 class="day-detail-title">{{ formatDayLabel() }}</h4>
+
+        @if (data.logged.length === 0 && data.scheduled.length === 0) {
+          <p class="day-empty">Brak aktywności w tym dniu.</p>
+        }
+
+        @for (event of data.logged; track event.id) {
+          <div class="day-event logged">
+            <span class="material-icon event-icon">{{ getCareTypeIcon(event.payload.care_type_id) }}</span>
+            <div class="event-content">
+              <span class="event-name">{{ event.payload.care_type_name }}</span>
+              <span class="event-time">{{ formatTime(event.occurred_at) }}</span>
+              @if (event.payload.notes) {
+                <span class="event-notes">{{ event.payload.notes }}</span>
+              }
+            </div>
+            <div class="event-actions">
+              <span class="event-badge badge-done">
+                <span class="material-icon">check</span>
+                Wykonano
+              </span>
+              <button
+                class="btn-delete-event"
+                [disabled]="undoingEventId() !== null"
+                title="Usuń wpis"
+                (click)="undoEvent(event)">
+                @if (undoingEventId() === event.id) {
+                  <div class="spinner-xs"></div>
+                } @else {
+                  <span class="material-icon">delete_outline</span>
+                }
+              </button>
+            </div>
+          </div>
+        }
+
+        @for (sched of data.scheduled; track sched.careTypeId) {
+          <div class="day-event scheduled">
+            <span class="material-icon event-icon">{{ sched.icon }}</span>
+            <div class="event-content">
+              <span class="event-name">{{ sched.careTypeName }}</span>
+              <span class="event-time">{{ t.dogs.careToDo }}</span>
+            </div>
+            <button
+              class="btn-mark-done"
+              [disabled]="markingDoneId() !== null"
+              (click)="markAsDone(sched, data.date)">
+              @if (markingDoneId() === sched.careTypeId) {
+                <div class="spinner-xs"></div>
+              } @else {
+                <span class="material-icon">check_circle</span>
+                Wykonano
+              }
+            </button>
+          </div>
+        }
+      </div>
+    }
+  }
+
+</div>

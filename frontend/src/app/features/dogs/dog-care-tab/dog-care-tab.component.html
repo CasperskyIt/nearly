@@ -1,0 +1,360 @@
+<div class="care-tab">
+
+  <!-- Sub-navigation -->
+  <div class="care-subnav">
+    <button
+      class="subnav-btn"
+      [class.active]="activeSubTab() === 'types'"
+      (click)="setSubTab('types')">
+      <span class="material-icon">grid_view</span>
+      {{ t.dogs.careTabTypes }}
+    </button>
+    <button
+      class="subnav-btn"
+      [class.active]="activeSubTab() === 'calendar'"
+      (click)="setSubTab('calendar')">
+      <span class="material-icon">calendar_month</span>
+      {{ t.dogs.careTabCalendar }}
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TYPES VIEW
+  ══════════════════════════════════════════════════════════ -->
+  @if (activeSubTab() === 'types') {
+    @if (loading()) {
+      <div class="care-grid">
+        @for (i of [1,2,3,4,5,6]; track i) {
+          <div class="care-card skeleton-card">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="care-grid">
+        @for (type of careTypes(); track type.id) {
+          @let badge = getScheduleBadge(type.id);
+          @let hasSchedule = scheduleByTypeId().has(type.id);
+
+          <div class="care-card" (click)="onLogCare(type)" role="button" tabindex="0">
+            <!-- Badge indicator -->
+            @if (badge) {
+              <span class="badge" [ngClass]="'badge-' + badge.state">{{ badge.label }}</span>
+            }
+
+            <span class="material-icon care-icon">{{ type.icon }}</span>
+            <span class="care-name">{{ type.name }}</span>
+            <span class="care-last">{{ getLastDoneLabel(type.id) }}</span>
+
+            <!-- Schedule indicator -->
+            @if (hasSchedule) {
+              <span class="schedule-chip">
+                <span class="material-icon">repeat</span>
+              </span>
+            }
+
+            <!-- Actions row -->
+            <div class="card-actions" (click)="$event.stopPropagation()">
+              <button
+                class="card-action-btn"
+                [title]="t.dogs.careSetSchedule"
+                (click)="onSetSchedule(type, $event)">
+                <span class="material-icon">{{ hasSchedule ? 'edit_calendar' : 'event_repeat' }}</span>
+              </button>
+              @if (!type.isPredefined) {
+                <button
+                  class="card-action-btn btn-action-danger"
+                  [title]="t.dogs.careDeleteType"
+                  (click)="onRemoveType(type, $event)">
+                  <span class="material-icon">delete_outline</span>
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Add custom type card -->
+        <div class="care-card add-card" (click)="onAddType()" role="button" tabindex="0">
+          <span class="material-icon care-icon">add_circle_outline</span>
+          <span class="care-name">{{ t.dogs.careAddType }}</span>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- ══════════════════════════════════════════════════════════
+       CALENDAR VIEW
+  ══════════════════════════════════════════════════════════ -->
+  @if (activeSubTab() === 'calendar') {
+    @if (loading()) {
+      <div class="agenda-skeleton">
+        @for (i of [1,2,3,4]; track i) {
+          <div class="skeleton-agenda-item">
+            <div class="skeleton-dot"></div>
+            <div class="skeleton-line wide"></div>
+          </div>
+        }
+      </div>
+    } @else {
+
+      <!-- Schedules section -->
+      <div class="agenda-section">
+        <h4 class="agenda-section-title">
+          <span class="material-icon">schedule</span>
+          {{ t.dogs.careSchedule }}
+        </h4>
+
+        @if (scheduleStatuses().length === 0) {
+          <p class="empty-hint">{{ t.dogs.careNoSchedules }}</p>
+        } @else {
+          @for (status of scheduleStatuses(); track status.schedule.id) {
+            <div class="agenda-item" [ngClass]="'agenda-' + (status.daysOffset < 0 ? 'overdue' : status.daysOffset === 0 ? 'today' : 'upcoming')">
+              <div class="agenda-dot"></div>
+              <div class="agenda-content">
+                <div class="agenda-row">
+                  <span class="material-icon agenda-icon">{{ status.schedule.careTypeIcon }}</span>
+                  <span class="agenda-name">{{ status.schedule.careTypeName }}</span>
+                  <span class="agenda-status-label">
+                    @if (status.daysOffset < 0) {
+                      {{ absVal(status.daysOffset) }} {{ t.dogs.careDaysOverdue }}
+                    } @else if (status.daysOffset === 0) {
+                      {{ t.dogs.careDueToday }}
+                    } @else {
+                      {{ t.dogs.careDaysLeft }} {{ status.daysOffset }} dni
+                    }
+                  </span>
+                </div>
+                <div class="agenda-sub">
+                  <span class="material-icon">repeat</span>
+                  {{ getIntervalLabel(status.schedule) }}
+                  &mdash;
+                  {{ t.dogs.careUpcoming }}: {{ formatDate(status.nextDue) }}
+                </div>
+                <div class="agenda-actions">
+                  <button class="btn-log-now" (click)="onLogCareForTypeId(status.schedule.careTypeId)">
+                    <span class="material-icon">check_circle_outline</span>
+                    {{ t.dogs.careLogButton }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- History section -->
+      <div class="agenda-section">
+        <h4 class="agenda-section-title">
+          <span class="material-icon">history</span>
+          {{ t.dogs.careHistory }}
+        </h4>
+
+        @if (careEvents().length === 0) {
+          <p class="empty-hint">{{ t.dogs.careNoHistory }}</p>
+        } @else {
+          @for (event of careEvents().slice(0, 30); track event.id) {
+            <div class="history-item">
+              <div class="history-dot"></div>
+              <div class="history-content">
+                <div class="history-row">
+                  <span class="material-icon history-icon">
+                    {{ getCareTypeIcon(event.payload.care_type_id) }}
+                  </span>
+                  <span class="history-name">{{ event.payload.care_type_name }}</span>
+                  <span class="history-date">{{ formatDate(event.occurred_at) }}</span>
+                  <button
+                    class="btn-delete-history"
+                    [disabled]="deletingEventId() !== null"
+                    title="Usuń wpis"
+                    (click)="deleteEvent(event)">
+                    @if (deletingEventId() === event.id) {
+                      <div class="spinner-history"></div>
+                    } @else {
+                      <span class="material-icon">delete_outline</span>
+                    }
+                  </button>
+                </div>
+                @if (event.payload.notes) {
+                  <p class="history-notes">{{ event.payload.notes }}</p>
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+    }
+  }
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     LOG EVENT MODAL
+══════════════════════════════════════════════════════════ -->
+@if (showLogModal()) {
+  <div class="modal-backdrop" (click)="closeLogModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">
+        <span class="material-icon modal-title-icon">{{ selectedCareType()?.icon }}</span>
+        {{ selectedCareType()?.name }}
+      </h3>
+
+      <form [formGroup]="logForm" class="modal-form">
+        <div class="form-row">
+          <label class="field-label">Data i godzina</label>
+          <app-date-picker formControlName="date" [includeTime]="true" placeholder="Wybierz datę i godzinę" />
+        </div>
+
+        <hr class="divider" />
+
+        <div class="form-row notes-row">
+          <label class="field-label" for="log-notes">{{ t.dogs.careNotes }}</label>
+          <textarea
+            id="log-notes"
+            class="field-input field-textarea"
+            formControlName="notes"
+            [placeholder]="t.dogs.careNotesPlaceholder"
+            rows="3"
+          ></textarea>
+        </div>
+
+        @if (logError()) {
+          <p class="field-error">{{ logError() }}</p>
+        }
+      </form>
+
+      <div class="modal-actions">
+        <button class="btn-outline" (click)="closeLogModal()" [disabled]="saving()">{{ t.dogs.cancel }}</button>
+        <button class="btn-primary" (click)="onSubmitLog()" [disabled]="saving()">
+          @if (saving()) { <div class="spinner-sm"></div> } @else { {{ t.dogs.careLogButton }} }
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ══════════════════════════════════════════════════════════
+     SCHEDULE MODAL
+══════════════════════════════════════════════════════════ -->
+@if (showScheduleModal()) {
+  <div class="modal-backdrop" (click)="closeScheduleModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">
+        <span class="material-icon modal-title-icon">event_repeat</span>
+        {{ t.dogs.careSchedule }}: {{ scheduleForType()?.name }}
+      </h3>
+
+      <form [formGroup]="scheduleForm" class="modal-form">
+        <div class="interval-row">
+          <span class="field-label">{{ t.dogs.careEvery }}</span>
+          <input
+            class="field-input interval-input"
+            type="number"
+            min="1"
+            max="365"
+            formControlName="intervalValue"
+          />
+          <select class="field-input unit-select" formControlName="intervalUnit">
+            @for (unit of intervalUnits; track unit) {
+              <option [value]="unit">{{ getUnitLabel(unit) }}</option>
+            }
+          </select>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="form-row toggle-row">
+          <label class="field-label" for="sched-active">Aktywny</label>
+          <label class="toggle-switch">
+            <input id="sched-active" type="checkbox" formControlName="isActive" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </form>
+
+      <div class="modal-actions">
+        @if (existingSchedule()) {
+          <button class="btn-outline btn-remove-sched" (click)="onRemoveSchedule()">
+            <span class="material-icon">delete_outline</span>
+            {{ t.dogs.careRemoveSchedule }}
+          </button>
+        }
+        <button class="btn-outline" (click)="closeScheduleModal()">{{ t.dogs.cancel }}</button>
+        <button class="btn-primary" (click)="onSubmitSchedule()">
+          <span class="material-icon">save</span>
+          Zapisz
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ══════════════════════════════════════════════════════════
+     ADD CUSTOM TYPE MODAL
+══════════════════════════════════════════════════════════ -->
+@if (showAddTypeModal()) {
+  <div class="modal-backdrop" (click)="closeAddTypeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">{{ t.dogs.careNewTypeTitle }}</h3>
+
+      <form [formGroup]="addTypeForm" class="modal-form">
+        <div class="form-row">
+          <label class="field-label" for="type-name">{{ t.dogs.name }}</label>
+          <div class="field-col">
+            <input
+              id="type-name"
+              class="field-input"
+              formControlName="name"
+              [placeholder]="t.dogs.careTypeNamePlaceholder"
+            />
+            @if (addTypeForm.get('name')?.hasError('required') && addTypeForm.get('name')?.touched) {
+              <span class="field-error">{{ t.dogs.nameRequired }}</span>
+            }
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="icon-section">
+          <span class="field-label">{{ t.dogs.careTypeIcon }}</span>
+          <div class="icon-grid">
+            @for (icon of availableIcons; track icon) {
+              <button
+                type="button"
+                class="icon-option"
+                [class.selected]="addTypeForm.value.icon === icon"
+                (click)="selectIcon(icon)">
+                <span class="material-icon">{{ icon }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      </form>
+
+      <div class="modal-actions">
+        <button class="btn-outline" (click)="closeAddTypeModal()">{{ t.dogs.cancel }}</button>
+        <button class="btn-primary" (click)="onSubmitAddType()">{{ t.dogs.careAddType }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ══════════════════════════════════════════════════════════
+     DELETE CUSTOM TYPE MODAL
+══════════════════════════════════════════════════════════ -->
+@if (showDeleteTypeModal()) {
+  <div class="modal-backdrop" (click)="closeDeleteTypeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">{{ t.dogs.careDeleteType }}?</h3>
+      <p class="modal-body">
+        <strong>{{ typeToDelete()?.name }}</strong> — {{ t.dogs.careDeleteTypeHint }}
+      </p>
+      <div class="modal-actions">
+        <button class="btn-outline" (click)="closeDeleteTypeModal()">{{ t.dogs.cancel }}</button>
+        <button class="btn-danger" (click)="confirmDeleteType()">{{ t.dogs.careDeleteType }}</button>
+      </div>
+    </div>
+  </div>
+}

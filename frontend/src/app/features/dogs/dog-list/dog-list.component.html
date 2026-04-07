@@ -1,0 +1,90 @@
+<div class="dogs-layout">
+  <main class="dogs-content">
+
+    <!-- List-2 style — widoczne gdy brak aktywnego dziecka -->
+    @if (!hasActiveChild) {
+      <section class="dog-overview">
+
+        <div class="overview-header">
+          <h1>{{ t.dogs.title }}</h1>
+          @if (!dogService.loading() && dogService.dogs().length > 0) {
+            <button class="btn-primary" (click)="onAddDog()">
+              <span class="material-icon">add</span>
+              {{ t.dogs.addDog }}
+            </button>
+          }
+        </div>
+
+        @if (dogService.loading()) {
+          @for (i of [1,2,3]; track i) {
+            <hr class="divider" />
+            <div class="dog-row skeleton">
+              <div class="dog-row-identity">
+                <div class="sk-box"></div>
+                <div class="sk-lines">
+                  <div class="sk-line wide"></div>
+                  <div class="sk-line narrow"></div>
+                </div>
+              </div>
+              <div class="sk-line wide"></div>
+              <div class="sk-line narrow"></div>
+            </div>
+          }
+          <hr class="divider" />
+        }
+
+        @if (!dogService.loading() && dogService.dogs().length === 0) {
+          <hr class="divider" />
+          <div class="empty-overview">
+            <span class="material-icon empty-icon">pets</span>
+            <p>{{ t.dogs.noDogs }}</p>
+            <button class="btn-primary" (click)="onAddDog()">
+              <span class="material-icon">add</span>
+              {{ t.dogs.addDog }}
+            </button>
+          </div>
+          <hr class="divider" />
+        }
+
+        @if (!dogService.loading() && dogService.dogs().length > 0) {
+          <hr class="divider" />
+          @for (dog of dogService.dogs(); track dog.id) {
+            <div class="dog-row" (click)="onSelectDog(dog)">
+
+              <!-- Avatar + imię/rasa -->
+              <div class="dog-row-identity">
+                <div class="dog-icon-box">
+                  @if (dog.avatar_url) {
+                    <img [src]="dog.avatar_url" [alt]="dog.name" class="dog-icon-img" />
+                  } @else {
+                    <span class="material-icon">pets</span>
+                  }
+                </div>
+                <div class="dog-row-meta">
+                  <span class="dog-row-name">{{ dog.name }}</span>
+                  <span class="dog-row-breed">{{ dog.breed || '—' }}</span>
+                </div>
+              </div>
+
+              <!-- Data dodania -->
+              <p class="dog-row-date">{{ formatDate(dog.created_at) }}</p>
+
+              <!-- Przycisk -->
+              <button class="btn-outline" (click)="onSelectDog(dog); $event.stopPropagation()">
+                <span>{{ t.dogs.tabProfile }}</span>
+                <span class="material-icon arrow">arrow_forward</span>
+              </button>
+
+            </div>
+            <hr class="divider" />
+          }
+        }
+
+      </section>
+    }
+
+    <!-- Child route outlet (detail / create) -->
+    <router-outlet></router-outlet>
+
+  </main>
+</div>

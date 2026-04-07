@@ -1,26 +1,15 @@
-import { Injectable, signal, effect } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Injectable, signal } from '@angular/core';
 import { AppTheme, themes } from './theme.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private currentTheme = signal<AppTheme>(themes['nearly']);
+  private currentTheme = signal<AppTheme>(themes['dogly']);
   private isDarkMode = signal<boolean>(false);
 
-  constructor(private router: Router) {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        const navEvent = event as NavigationEnd;
-        const path = navEvent.urlAfterRedirects.split('/')[1] || 'nearly';
-        this.setTheme(path);
-      });
-
-    const initialPath = this.router.url.split('/')[1] || 'nearly';
-    this.setTheme(initialPath);
+  constructor() {
+    this.applyTheme(themes['dogly']);
   }
 
   get theme() {
@@ -41,12 +30,6 @@ export class ThemeService {
 
   themeIcons() {
     return this.currentTheme().icons;
-  }
-
-  private setTheme(appName: string): void {
-    const theme = themes[appName] || themes['nearly'];
-    this.currentTheme.set(theme);
-    this.applyTheme(theme);
   }
 
   toggleDarkMode(): void {

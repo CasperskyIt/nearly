@@ -1,0 +1,376 @@
+.month-calendar {
+  width: 100%;
+}
+
+// ── Navigation header ───────────────────────────────────────────────────────
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cal-header-center {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cal-month-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+  min-width: 160px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.cal-nav {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  transition: background 0.15s ease;
+
+  .material-icon { font-size: 20px; }
+  &:hover { background: var(--color-surface-variant); }
+}
+
+.cal-today-btn {
+  font-size: 12px;
+  padding: 3px 10px;
+  border: 1px solid var(--color-primary);
+  border-radius: 20px;
+  background: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s ease;
+
+  &:hover { background: rgba(var(--color-primary-rgb, 0, 0, 0), 0.06); }
+}
+
+// ── Weekday labels ───────────────────────────────────────────────────────────
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.cal-weekday {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  padding: 4px 0;
+  text-transform: capitalize;
+}
+
+// ── Day grid ─────────────────────────────────────────────────────────────────
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 6px 2px 4px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+  min-height: 52px;
+  position: relative;
+
+  &:hover:not(:disabled) {
+    background: var(--color-surface-variant, #f5f0eb);
+  }
+
+  &.other-month {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  &.today .cal-day-num {
+    background: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.selected {
+    background: var(--color-surface-variant, #f0ece8);
+    border-color: var(--color-primary);
+  }
+}
+
+.cal-day-num {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 26px;
+  min-width: 26px;
+  text-align: center;
+}
+
+// ── Dots ─────────────────────────────────────────────────────────────────────
+
+.cal-dots {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+  margin-top: 3px;
+  min-height: 7px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+
+  &.dot-logged {
+    background: var(--color-primary);
+  }
+
+  &.dot-scheduled {
+    background: transparent;
+    border: 1.5px solid #f59e0b;
+  }
+}
+
+// ── Legend ────────────────────────────────────────────────────────────────────
+
+.cal-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+// ── Selected day detail ───────────────────────────────────────────────────────
+
+.day-detail {
+  margin-top: 16px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+}
+
+.day-detail-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 12px;
+  text-transform: capitalize;
+}
+
+.day-empty {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin: 0;
+}
+
+.day-event {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--color-border);
+
+  &.logged {
+    background: var(--color-surface);
+  }
+
+  &.scheduled {
+    background: rgba(245, 158, 11, 0.06);
+    border-color: rgba(245, 158, 11, 0.2);
+  }
+}
+
+.event-icon {
+  font-size: 20px;
+  color: var(--color-primary);
+  margin-top: 1px;
+}
+
+.event-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.event-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.event-time {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.event-notes {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.event-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.btn-delete-event {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  .material-icon { font-size: 15px; }
+
+  &:hover:not(:disabled) {
+    background: var(--color-error, #ef4444);
+    border-color: var(--color-error, #ef4444);
+    color: white;
+  }
+
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.btn-mark-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+
+  .material-icon { font-size: 15px; }
+
+  &:hover:not(:disabled) { opacity: 0.85; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.spinner-xs {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.event-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  &.badge-done {
+    background: rgba(22, 163, 74, 0.1);
+    color: #16a34a;
+
+    .material-icon { font-size: 14px; }
+  }
+
+  &.badge-due {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+  }
+}
+
+// ── Skeleton ──────────────────────────────────────────────────────────────────
+
+.sk-block {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-variant, #f0ece8) 25%,
+    var(--color-surface, #fafafa) 50%,
+    var(--color-surface-variant, #f0ece8) 75%
+  );
+  background-size: 200% 100%;
+  animation: sk-load 1.5s infinite;
+  margin: 2px 4px;
+}
+
+.sk-cell {
+  height: 52px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-variant, #f0ece8) 25%,
+    var(--color-surface, #fafafa) 50%,
+    var(--color-surface-variant, #f0ece8) 75%
+  );
+  background-size: 200% 100%;
+  animation: sk-load 1.5s infinite;
+}
+
+.cal-skeleton {
+  .cal-weekdays { margin-bottom: 8px; }
+}
+
+@keyframes sk-load {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

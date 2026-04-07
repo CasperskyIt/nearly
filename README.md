@@ -1,8 +1,8 @@
-# Nearly
+# Dogly
 
 Discover the best things to do near you in 15, 30 or 60 minutes.
 
-Nearly helps you find micro-adventures nearby:
+Dogly helps you find micro-adventures nearby:
 - hidden viewpoints
 - local coffee spots
 - street art

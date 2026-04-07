@@ -1,0 +1,80 @@
+<div class="create-page">
+
+  <div class="overview-header">
+    <div class="header-left">
+      <button class="btn-icon" type="button" (click)="onCancel()">
+        <span class="material-icon">arrow_back</span>
+      </button>
+      <h1>{{ t.dogs.addDog }}</h1>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <hr class="divider" />
+
+    <!-- Imię -->
+    <div class="form-row">
+      <label class="field-label" for="name">{{ t.dogs.name }}</label>
+      <div class="field-body">
+        <input
+          id="name"
+          class="field-input"
+          [class.invalid]="form.controls.name.invalid && form.controls.name.touched"
+          type="text"
+          formControlName="name"
+          [placeholder]="t.dogs.namePlaceholder"
+          autocomplete="off" />
+        @if (form.controls.name.hasError('required') && form.controls.name.touched) {
+          <span class="field-error">{{ t.dogs.nameRequired }}</span>
+        }
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Rasa -->
+    <div class="form-row">
+      <label class="field-label" for="breed">{{ t.dogs.breed }}</label>
+      <div class="field-body">
+        <input
+          id="breed"
+          class="field-input"
+          type="text"
+          formControlName="breed"
+          [placeholder]="t.dogs.breedPlaceholder"
+          list="breed-list"
+          autocomplete="off" />
+        <datalist id="breed-list">
+          @for (breed of filteredBreeds(); track breed) {
+            <option [value]="breed"></option>
+          }
+        </datalist>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Data urodzenia -->
+    <div class="form-row">
+      <label class="field-label" for="dob">{{ t.dogs.dateOfBirth }}</label>
+      <div class="field-body">
+        <app-date-picker formControlName="dateOfBirth" [includeTime]="false" placeholder="Wybierz datę urodzenia" />
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Akcje -->
+    <div class="form-actions">
+      <button class="btn-outline" type="button" (click)="onCancel()">
+        {{ t.dogs.cancel }}
+      </button>
+      <button class="btn-primary" type="submit" [disabled]="submitting()">
+        <span class="material-icon">{{ submitting() ? 'hourglass_empty' : 'add' }}</span>
+        {{ submitting() ? t.dogs.adding : t.dogs.addDog }}
+      </button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,52 @@
+<div class="app-container" [class.dark-mode]="darkMode()">
+  <div class="filters-bar">
+    @for (category of categories; track category.id) {
+      <button
+        class="filter-chip"
+        [class.active]="selectedCategories().has(category.id)"
+        (click)="toggleCategory(category.id)">
+        <span class="material-icon">{{ category.icon }}</span>
+        <span class="chip-label">{{ category.label }}</span>
+      </button>
+    }
+  </div>
+
+  @if (showList()) {
+    <div class="places-sidebar">
+      <div class="sidebar-header">
+        <h2>{{ t.places.title }}</h2>
+        <span class="places-count">{{ visiblePlaces().length }} {{ t.places.count }}</span>
+      </div>
+      <div class="places-scroll">
+        <app-places-list
+          [places]="visiblePlaces()"
+          [selectedPlace]="selectedPlace()"
+          [isLoading]="isLoading()"
+          [getCategoryColor]="getCategoryColor"
+          [getCategoryIcon]="getCategoryIcon"
+          [getCategoryLabel]="getCategoryLabel"
+          (selectPlace)="onPlaceSelected($event)">
+        </app-places-list>
+      </div>
+    </div>
+  }
+
+  <div class="map-controls">
+
+    <button class="icon-btn" (click)="mapRef?.onLocate()">
+      <span class="material-icon">my_location</span>
+    </button>
+  </div>
+
+  <button class="sidebar-toggle" (click)="toggleList()" [class.collapsed]="!showList()">
+    <span class="material-icon">{{ showList() ? 'chevron_left' : 'chevron_right' }}</span>
+  </button>
+
+  <app-map #mapRef
+    [selectedCategories]="selectedCategories()"
+    [showList]="showList()"
+    (placeSelected)="onPlaceSelected($event)"
+    (loadingChange)="isLoading.set($event)"
+    (visiblePlacesChange)="onVisiblePlacesChanged($event)">
+  </app-map>
+</div>

@@ -299,3 +299,25 @@ CREATE TRIGGER on_dog_created
   AFTER INSERT ON public.dogs
   FOR EACH ROW
   EXECUTE FUNCTION public.create_owner_guardian();
+
+-- ── Storage: dog-avatars bucket ───────────────────────────────────────────
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('dog-avatars', 'dog-avatars', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Authenticated users can upload dog avatars"
+  ON storage.objects FOR INSERT TO authenticated
+  WITH CHECK (bucket_id = 'dog-avatars');
+
+CREATE POLICY "Public read dog avatars"
+  ON storage.objects FOR SELECT TO public
+  USING (bucket_id = 'dog-avatars');
+
+CREATE POLICY "Authenticated users can update dog avatars"
+  ON storage.objects FOR UPDATE TO authenticated
+  USING (bucket_id = 'dog-avatars');
+
+CREATE POLICY "Authenticated users can delete dog avatars"
+  ON storage.objects FOR DELETE TO authenticated
+  USING (bucket_id = 'dog-avatars');
+

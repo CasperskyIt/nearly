@@ -6,8 +6,12 @@ import { Language, translations, languageNames, Translations } from './i18n.conf
 })
 export class I18nService {
   private currentLanguage = signal<Language>('pl');
-  
+
   readonly languageNames = languageNames;
+
+  constructor() {
+    this.init();
+  }
   
   get language() {
     return this.currentLanguage.asReadonly();
@@ -19,7 +23,7 @@ export class I18nService {
   
   setLanguage(lang: Language): void {
     this.currentLanguage.set(lang);
-    localStorage.setItem('nearly-language', lang);
+    localStorage.setItem('dogly-language', lang);
   }
   
   getCurrentLanguage(): Language {
@@ -31,7 +35,7 @@ export class I18nService {
   }
   
   init(): void {
-    const saved = localStorage.getItem('nearly-language') as Language | null;
+    const saved = localStorage.getItem('dogly-language') as Language | null;
     if (saved && translations[saved]) {
       this.currentLanguage.set(saved);
     }

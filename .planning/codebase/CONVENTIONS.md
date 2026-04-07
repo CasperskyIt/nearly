@@ -218,7 +218,6 @@ export class HeaderComponent {
 
 // Config export pattern
 export const themes: Record<string, AppTheme> = {
-  nearly: { ... },
   dogly: { ... }
 }
 ```

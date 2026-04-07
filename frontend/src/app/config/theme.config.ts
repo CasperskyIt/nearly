@@ -33,56 +33,6 @@ export interface AppTheme {
 }
 
 export const themes: Record<string, AppTheme> = {
-  nearly: {
-    name: 'Nearly',
-    colors: {
-      primary: '#E53935',
-      primaryDark: '#C62828',
-      primaryLight: '#EF5350',
-      accent: '#FF7043',
-      background: '#FAFAFA',
-      surface: '#FFFFFF',
-      surfaceVariant: '#F5F5F5',
-      text: '#212121',
-      textSecondary: '#757575',
-      border: '#E0E0E0',
-      success: '#43A047',
-      warning: '#FFA000',
-      error: '#E53935',
-    },
-    icons: {
-      logo: 'explore',
-      marker: 'place',
-      categories: {
-        restaurants: 'restaurant',
-        pubs: 'local_bar',
-        cafes: 'local_cafe',
-        museums: 'museum',
-        art_galleries: 'palette',
-        parks: 'park',
-        street_food: 'fastfood',
-        fast_food: 'fastfood',
-      },
-    },
-    strings: {
-      appName: 'Nearly',
-      welcomeTitle: 'Discover Nearby Adventures',
-      welcomeSubtitle: 'Find hidden gems, coffee spots, parks and more around you',
-      welcomeButton: 'Find adventures near me',
-      filtersTitle: 'Categories',
-      placesTitle: 'Nearby Places',
-      categories: {
-        restaurants: 'Restaurants',
-        pubs: 'Pubs',
-        cafes: 'Cafés',
-        museums: 'Museums',
-        art_galleries: 'Art Galleries',
-        parks: 'Parks',
-        street_food: 'Street Food',
-        fast_food: 'Fast Food',
-      },
-    },
-  },
   dogly: {
     name: 'Dogly',
     logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">

@@ -115,6 +115,12 @@ None — no external service configuration required. Supabase OAuth configuratio
 - Phase 03 (Dog Profiles) can rely on `authGuard` and `currentUser()` signal as established patterns
 - AccountComponent is a placeholder — full account management planned for a later phase
 
+## Self-Check: PASSED
+
+- All 9 component files exist
+- Task commits 145ca1e and 442080a both present in git log
+- TypeScript compiles cleanly (npx tsc --noEmit: no output)
+
 ---
 *Phase: 02-authentication*
 *Completed: 2026-03-28*

@@ -1,0 +1,74 @@
+<main class="map-container" [class.full-width]="!showList()" id="map"></main>
+<div class="zoom-controls">
+  <button class="zoom-btn" (click)="zoomIn()">
+    <span class="material-icon">add</span>
+  </button>
+  <button class="zoom-btn" (click)="zoomOut()">
+    <span class="material-icon">remove</span>
+  </button>
+</div>
+
+@if (showWelcome()) {
+  <div class="welcome-overlay" (click)="onLocate()">
+    <div class="welcome-content">
+      <div class="welcome-icon" [class.with-logo]="getLogo()">
+        @if (getLogo()) {
+          <div class="logo-svg" [innerHTML]="getLogo()"></div>
+        } @else {
+          <span class="material-icon">{{ themeIcons.logo }}</span>
+        }
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring delay-1"></div>
+        <div class="pulse-ring delay-2"></div>
+      </div>
+      <h1>{{ t.app.welcomeTitle }}</h1>
+      <p>{{ t.app.welcomeSubtitle }}</p>
+      <button class="cta-button">
+        <span class="material-icon">my_location</span>
+        {{ t.app.welcomeButton }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (selectedPlace()) {
+  <div class="place-detail-panel" [class.full-width]="!showList()">
+    <button class="close-btn" (click)="selectedPlace.set(null)">
+      <span class="material-icon">close</span>
+    </button>
+    <div class="detail-header">
+      <div class="detail-category-icon" [style.background-color]="getCategoryColor(selectedPlace()!.category)">
+        <span class="material-icon">{{ getCategoryIcon(selectedPlace()!.category) }}</span>
+      </div>
+      <div class="detail-info">
+        <h2>{{ selectedPlace()!.name }}</h2>
+        <p class="detail-category">{{ getCategoryLabel(selectedPlace()!.category) }}</p>
+      </div>
+    </div>
+
+    <div class="detail-rating">
+      <span class="material-icon star">star</span>
+      <span class="rating-value">{{ selectedPlace()!.rating }}</span>
+      <span class="review-count">({{ selectedPlace()!.rating * 12 }} opinii)</span>
+    </div>
+
+    <p class="detail-description">
+      {{ selectedPlace()!.name }} to {{ getCategoryLabel(selectedPlace()!.category).toLowerCase() }}
+    </p>
+
+    <div class="detail-actions">
+      <button class="action-btn">
+        <span class="material-icon">directions</span>
+        <span>Dojedź</span>
+      </button>
+      <button class="action-btn">
+        <span class="material-icon">share</span>
+        <span>Udostępnij</span>
+      </button>
+      <button class="action-btn">
+        <span class="material-icon">favorite_border</span>
+        <span>Zapisz</span>
+      </button>
+    </div>
+  </div>
+}

@@ -1,0 +1,63 @@
+<header class="header">
+  <div class="header-left">
+    <h1 class="app-title" (click)="onHome()" role="link">{{ themeStrings().appName }}</h1>
+  </div>
+  <div class="header-right">
+    <button class="icon-btn lang-btn" (click)="toggleLangMenu()">
+      <span class="material-icon">language</span>
+      <span class="lang-code">{{ currentLanguage.toUpperCase() }}</span>
+    </button>
+    @if (supabase.currentUser() === null) {
+      <button class="sign-in-link" (click)="onSignIn()">{{ t.common.signIn }}</button>
+    } @else {
+      <button class="my-dogs-btn" (click)="onMyDogs()">
+        <span class="material-icon">pets</span>
+        {{ t.nav.myDogs }}
+      </button>
+      <div class="user-menu-wrapper">
+        <button class="avatar-button" (click)="toggleUserMenu()" [attr.aria-label]="'User menu'">
+          <div class="avatar-circle">
+            <span class="avatar-initials">{{ getInitials() }}</span>
+          </div>
+        </button>
+        @if (showUserMenu()) {
+          <div class="user-menu">
+            <button class="user-menu-item" (click)="onMyAccount()">
+              <span class="material-icon">person</span>
+              <span>{{ t.nav.myAccount }}</span>
+            </button>
+            <button class="user-menu-item" (click)="onSignOut()">
+              <span class="material-icon">logout</span>
+              <span>{{ t.nav.signOut }}</span>
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</header>
+
+@if (showLangMenu()) {
+  <div class="lang-menu">
+    @for (lang of languages; track lang.code) {
+      <button
+        class="lang-option"
+        [class.active]="currentLanguage === lang.code"
+        (click)="setLanguage(lang.code)">
+        {{ lang.name }}
+      </button>
+    }
+  </div>
+}
+
+@if (showSignOutModal()) {
+  <div class="modal-backdrop" (click)="cancelSignOut()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">Sign out of {{ themeStrings().appName }}?</h3>
+      <div class="modal-actions">
+        <button class="btn-outline" (click)="cancelSignOut()">Cancel</button>
+        <button class="btn-primary" (click)="confirmSignOut()">Sign out</button>
+      </div>
+    </div>
+  </div>
+}
