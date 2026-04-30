@@ -388,3 +388,50 @@ These items must be confirmed before planning the relevant phase. Do not begin i
 *Roadmap defined: 2026-03-22*
 *Ready for phase planning: yes*
 *Next step: `/gsd:plan-phase 1`*
+
+---
+
+## Backlog
+
+Backlog items are unsequenced ideas captured for later. They live outside the active phase sequence (999.x numbering) and accumulate context until promoted via `/gsd:review-backlog`.
+
+### Phase 999.1: Vet role with prescriptions in extended Health tab (BACKLOG)
+
+**Goal:** [Captured for future planning] A user can be linked to a dog with the role "vet" and write veterinary recommendations / prescriptions / treatment plans in the existing Health tab. Vet has read access to the rest of the dog's data.
+
+**Requirements:** TBD
+
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with /gsd:review-backlog when ready)
+
+**Captured context (2026-04-30):**
+- Depends on the multi-role per-dog relationship model introduced in the Trainer phase
+- Vet attached via the same email-invite flow as co-guardian (see `supabase/migrations/20260408_guardian_invite_by_email.sql`)
+- UI: extend existing Health tab with a "Veterinary recommendations" section editable only by vet role
+- Should integrate with calendar for medication scheduling
+- Open questions: structured prescription model vs freeform notes? Multiple vets per dog?
+
+---
+
+### Phase 999.2: Breeder role with litter management and ownership transfer (BACKLOG)
+
+**Goal:** [Captured for future planning] A user with the breeder role (hodowca) can create litters and dogs, then transfer ownership to a new owner while retaining read-only "breeder" access (for pedigree/lineage tracking).
+
+**Requirements:** TBD
+
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with /gsd:review-backlog when ready)
+
+**Captured context (2026-04-30):**
+- Depends on the multi-role per-dog relationship model introduced in the Trainer phase
+- Breeder creates dogs with litter metadata (mother, father, date of birth, puppies in litter)
+- After sale, ownership transfers to new owner — breeder keeps read access to lineage data
+- Open questions: pedigree/lineage data model (multi-generational)? Kennel as a first-class entity (vs. just a flag on the user)? Cross-app dog directory?
+
+---
+
+*Backlog updated: 2026-04-30*
