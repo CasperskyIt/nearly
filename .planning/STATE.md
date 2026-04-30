@@ -5,7 +5,7 @@ milestone_name: milestone
 status: unknown
 last_updated: "2026-03-28T11:57:43.151Z"
 progress:
-  total_phases: 7
+  total_phases: 8
   completed_phases: 2
   total_plans: 12
   completed_plans: 11
@@ -35,6 +35,13 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 | 5 | Daily Care Tracking | ○ Pending |
 | 6 | Health Records & Reminders | ○ Pending |
 | 7 | Polish & Place Discovery | ○ Pending |
+| 8 | Trainer & Training Tab | ○ Pending (not yet planned) |
+
+## Roadmap Evolution
+
+- 2026-04-30: Phase 8 added — Trainer & Training Tab (multi-role per-dog foundation, scope captured in ROADMAP §Phase 8)
+- 2026-04-30: Backlog 999.1 added — Vet role with prescriptions in extended Health tab (depends on Phase 8 role model)
+- 2026-04-30: Backlog 999.2 added — Breeder role with litter management and ownership transfer (depends on Phase 8 role model)
 
 ## Active Work
 

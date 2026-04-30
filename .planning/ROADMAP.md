@@ -16,6 +16,7 @@
 - [ ] **Phase 5: Daily Care Tracking** — Unified care_events feed, feeding/weight/note logging, Realtime sync
 - [ ] **Phase 6: Health Records & Reminders** — Vaccination and medication records, pg_cron email dispatch
 - [ ] **Phase 7: Polish & Place Discovery Integration** — Nav integration, weight chart, feeding indicator, account deletion
+- [ ] **Phase 8: Trainer & Training Tab** — Multi-role per-dog foundation, trainer email invite, Training tab with scheduled tasks + recurrence, calendar integration, in-app badge
 
 ---
 
@@ -30,6 +31,7 @@
 | 5. Daily Care Tracking | 0/4 | Not started | — |
 | 6. Health Records & Reminders | 0/5 | Not started | — |
 | 7. Polish & Place Discovery Integration | 0/4 | Not started | — |
+| 8. Trainer & Training Tab | 0/0 | Not planned | — |
 
 ---
 
@@ -296,6 +298,54 @@ Plans:
 
 ---
 
+### Phase 8: Trainer & Training Tab
+
+**Goal:** A dog owner can invite a trainer by email; the trainer manages a per-dog "Training" tab with date-scheduled tasks (with optional recurrence); the owner ticks tasks complete and the trainer sees the history. This phase also establishes the multi-role per-dog relationship foundation that backlog items 999.1 (vet) and 999.2 (breeder) will build on.
+
+**Depends on:** Phase 4 (`dog_guardians` table, email-based invite mechanism, Resend Edge Function `send-invite-email`)
+
+**Requirements:** TBD (will be defined during `/gsd:discuss-phase 8` and added to REQUIREMENTS.md)
+
+**Success Criteria** (what must be TRUE when this phase is done):
+1. An owner enters an email address on their dog's settings page and selects "Trainer" role; within 60 seconds the invitee receives an email with the same UUID-token accept link as co-guardian invites
+2. After acceptance, the trainer sees the dog appear in their dog list and can open a "Training" tab on the dog detail page that co-guardians cannot edit (only read)
+3. A trainer can create a training task with title, description, due date/time, and optional recurrence (daily / weekly with weekday selection); the task appears in the dog's Training tab list
+4. The owner sees the same training task and can mark it as complete; the trainer sees the completion timestamp + can leave a freeform comment on the completed task
+5. Training tasks with a due date appear in the existing Calendar tab next to other care events; the calendar has a type filter that lets the user hide/show "Training" entries
+6. The Training tab icon shows an in-app badge with the count of overdue tasks (due date in the past, not yet completed); the badge clears when all overdue tasks are completed
+7. A user with no trainer/owner/co-guardian relationship to a dog receives zero rows from `training_tasks` for that dog — RLS enforced at the database level
+8. The `dog_guardians.role` column accepts `'owner' | 'co-guardian' | 'trainer'` (CHECK constraint); the `is_dog_guardian()` function continues to grant any guardian read access, but a new `is_dog_trainer()` helper grants Training write access
+
+**Schema established in this phase:**
+- Extend `dog_guardians.role` CHECK constraint to allow `'trainer'` alongside existing values
+- New `is_dog_trainer(p_dog_id UUID)` PostgreSQL helper function (`SECURITY DEFINER`, `STABLE`)
+- New `training_tasks` table: `id`, `dog_id`, `created_by`, `title`, `description`, `due_at`, `recurrence` (JSONB or enum + interval), `recurrence_until`, `completed_at`, `completed_by`, `trainer_comment`, `created_at`, `updated_at`
+- RLS on `training_tasks`: read for any guardian (`is_dog_guardian()`), write for trainers only (`is_dog_trainer()`), `completed_at` update for owners + trainers
+- Required index: `idx_training_tasks_dog_due ON training_tasks(dog_id, due_at) WHERE completed_at IS NULL`
+- Calendar tab data source extends to UNION-style query that includes `training_tasks` rows alongside `care_events`
+
+**Captured scope decisions (2026-04-30):**
+- **Role model**: per-dog relationship (not global user role) — same user can be owner of dog A, trainer of dog B
+- **Cardinality**: many-to-many (multiple trainers per dog, multiple dogs per trainer)
+- **Owner vs co-guardian**: owner = primary (full rights including invite/remove), co-guardian = secondary (limited; cannot invite trainers or remove dog) — this distinction is enforced via `role` column on `dog_guardians`
+- **Trainer permissions**: full write in Training tab; read-only on Health, Calendar, profile; no access to invite flow
+- **Invite flow**: reuse the email-invite mechanism from Phase 4 (`supabase/migrations/20260408_guardian_invite_by_email.sql`), with `role = 'trainer'` on the invite row
+- **Task completion**: owner ticks complete, trainer sees history and can comment — trainer does NOT verify/approve
+- **Calendar integration**: unified view — training tasks appear alongside care events with a type filter
+- **Notifications**: in-app badge only (overdue count) — no email/push in this phase
+
+**Pitfalls to address:**
+- Recurrence model: decide between RRULE (full iCal-style) vs. simplified `{interval: 'daily'|'weekly', weekdays: [...], until: date}` JSONB. Simpler is better for v1.
+- `dog_guardians.role` CHECK constraint must be migrated carefully — existing rows have `'guardian'` (the original default from Phase 3); plan a data migration to convert `'guardian'` → `'owner'` (for the dog's creator) or `'co-guardian'` (for invitees).
+- Calendar tab UNION query must respect RLS on both `care_events` and `training_tasks` — verify policies fire correctly when one user is a trainer of dog A and a co-guardian of dog B.
+
+**Key constraints:**
+- Do NOT add vet or breeder roles in this phase — they live in backlog 999.1 / 999.2 and will be added once Phase 8 ships and the role model is proven
+- Do NOT introduce push notifications or email-on-task in this phase — in-app badge only
+- Trainer permissions: must be enforced via RLS, not just hidden in the UI — a malicious trainer cannot insert into `care_events` or `health_records`
+
+---
+
 ## Requirement Coverage
 
 | Requirement | Phase | Status |
@@ -366,6 +416,9 @@ Phase 1 (Foundation)
                     └── Phase 5 (Daily Care Tracking) — is_dog_guardian() tested with real co-guardian data
                           └── Phase 6 (Health Records) — care_events model exists for medication_dose event type
                                 └── Phase 7 (Polish) — all feature data exists for chart/indicator derivation
+
+Phase 4 (Co-Guardians)
+  └── Phase 8 (Trainer & Training Tab) — extends dog_guardians.role and reuses email invite flow
 ```
 
 ---
