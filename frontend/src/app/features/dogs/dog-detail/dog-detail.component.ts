@@ -6,7 +6,9 @@ import { DogService } from '../../../core/services/dog.service';
 import { I18nService } from '../../../config/i18n.service';
 import { Dog, DogGuardian, UpdateDogRequest } from '../../../core/models/dog.model';
 import { DogCareTabComponent } from '../dog-care-tab/dog-care-tab.component';
-import { DogMonthCalendarComponent } from '../dog-month-calendar/dog-month-calendar.component';
+import { DogCalendarTabComponent } from '../dog-calendar-tab/dog-calendar-tab.component';
+import { DogHealthTabComponent } from '../dog-health-tab/dog-health-tab.component';
+import { DogCoguardiansTabComponent } from '../dog-coguardians-tab/dog-coguardians-tab.component';
 import { DatePickerComponent } from '../../../shared/components/date-picker/date-picker.component';
 
 type Tab = 'calendar' | 'care' | 'health' | 'coguardians';
@@ -20,7 +22,9 @@ type Tab = 'calendar' | 'care' | 'health' | 'coguardians';
     CommonModule,
     ReactiveFormsModule,
     DogCareTabComponent,
-    DogMonthCalendarComponent,
+    DogCalendarTabComponent,
+    DogHealthTabComponent,
+    DogCoguardiansTabComponent,
     DatePickerComponent,
   ],
 })

@@ -12,12 +12,18 @@ export interface Dog {
 export interface DogGuardian {
   id: string;
   dog_id: string;
-  user_id: string;
+  user_id: string | null;
   role: 'owner' | 'guardian';
   status: 'invited' | 'accepted';
   invite_token: string | null;
+  invited_email: string | null;
   expires_at: string | null;
   created_at: string;
+}
+
+export interface DogGuardianWithProfile extends DogGuardian {
+  username?: string | null;
+  profile_avatar_url?: string | null;
 }
 
 export interface CreateDogRequest {

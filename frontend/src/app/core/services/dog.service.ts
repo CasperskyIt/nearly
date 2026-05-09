@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { LoggerService } from './logger.service';
-import { Dog, CreateDogRequest, UpdateDogRequest, DogGuardian } from '../models/dog.model';
+import { Dog, CreateDogRequest, UpdateDogRequest, DogGuardian, DogGuardianWithProfile } from '../models/dog.model';
 
 @Injectable({ providedIn: 'root' })
 export class DogService {
@@ -248,23 +248,74 @@ export class DogService {
   }
 
   /**
-   * Get list of co-guardians for a dog (status='accepted' only)
+   * Get all guardians for a dog (both accepted and invited), enriched with profile data.
    */
-  async getGuardians(dogId: string): Promise<DogGuardian[]> {
+  async getGuardians(dogId: string): Promise<DogGuardianWithProfile[]> {
     try {
-      const { data, error } = await this.supabaseService.supabase
+      const { data: guardians, error } = await this.supabaseService.supabase
         .from('dog_guardians')
         .select('*')
         .eq('dog_id', dogId)
-        .eq('status', 'accepted');
+        .order('created_at', { ascending: true });
 
       if (error) throw error;
+      if (!guardians?.length) return [];
 
-      return data || [];
+      const userIds = guardians.map(g => g.user_id);
+      const { data: profiles } = await this.supabaseService.supabase
+        .from('profiles')
+        .select('id, username, avatar_url')
+        .in('id', userIds);
+
+      const profileMap = new Map(profiles?.map(p => [p.id, p]) ?? []);
+
+      return guardians.map(g => ({
+        ...g,
+        username: profileMap.get(g.user_id)?.username ?? null,
+        profile_avatar_url: profileMap.get(g.user_id)?.avatar_url ?? null,
+      }));
     } catch (err: any) {
       this.error.set(err.message);
       this.logger.error('DogService: Error fetching guardians', err);
       return [];
+    }
+  }
+
+  /**
+   * Invite a user by username to be a co-guardian.
+   * Returns null if the username doesn't exist, throws on DB error.
+   */
+  async inviteGuardian(dogId: string, email: string): Promise<DogGuardianWithProfile | null> {
+    const { data, error } = await this.supabaseService.supabase.functions.invoke('invite-guardian', {
+      body: { dogId, email },
+    });
+
+    if (error) throw error;
+    if (data?.error === 'duplicate') throw new Error('duplicate');
+
+    const guardian = data?.guardian as DogGuardianWithProfile;
+    // For existing users the edge fn may return invited_email; for new users user_id is null
+    if (!guardian.username && data?.type === 'new_user') {
+      guardian.username = email;
+    }
+    return guardian;
+  }
+
+  /**
+   * Remove a guardian entry (cancels invite or removes accepted guardian).
+   */
+  async removeGuardian(guardianId: string): Promise<boolean> {
+    try {
+      const { error } = await this.supabaseService.supabase
+        .from('dog_guardians')
+        .delete()
+        .eq('id', guardianId);
+
+      if (error) throw error;
+      return true;
+    } catch (err: any) {
+      this.logger.error('DogService: Error removing guardian', err);
+      return false;
     }
   }
 }

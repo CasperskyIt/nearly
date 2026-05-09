@@ -1,0 +1,124 @@
+<div class="coguardians-tab">
+
+  <!-- Section header -->
+  <div class="tab-header">
+    <h3 class="tab-title">Opiekunowie</h3>
+    <button class="btn-invite" (click)="openInviteModal()">
+      <span class="material-icon">person_add</span>
+      Zaproś
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  @if (loading()) {
+    <div class="guardian-skeleton">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="skeleton-item">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-lines">
+            <div class="skeleton-line wide"></div>
+            <div class="skeleton-line narrow"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Guardian list -->
+  @if (!loading() && guardians().length > 0) {
+    <div class="guardian-list">
+      @for (guardian of guardians(); track guardian.id) {
+        <div class="guardian-card">
+          <div class="guardian-avatar">
+            @if (guardian.profile_avatar_url) {
+              <img [src]="guardian.profile_avatar_url" [alt]="getDisplayName(guardian)" class="avatar-img" />
+            } @else {
+              <span class="material-icon">person</span>
+            }
+          </div>
+          <div class="guardian-info">
+            <span class="guardian-name">{{ getDisplayName(guardian) }}</span>
+            <div class="guardian-role-row">
+              <span class="guardian-role-badge" [class]="'role-' + guardian.role">
+                {{ getRoleLabel(guardian.role) }}
+              </span>
+              <span class="guardian-status-badge" [class]="'status-' + guardian.status">
+                {{ getStatusLabel(guardian.status) }}
+              </span>
+            </div>
+          </div>
+          @if (guardian.role !== 'owner') {
+            <button
+              class="btn-remove"
+              [disabled]="removingId() === guardian.id"
+              (click)="onRemove(guardian)"
+              [title]="guardian.status === 'invited' ? 'Anuluj zaproszenie' : 'Usuń opiekuna'">
+              @if (removingId() === guardian.id) {
+                <div class="spinner-sm"></div>
+              } @else {
+                <span class="material-icon">close</span>
+              }
+            </button>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Empty state -->
+  @if (!loading() && guardians().length === 0) {
+    <div class="empty-state">
+      <span class="material-icon empty-icon">group</span>
+      <p class="empty-text">Brak opiekunów</p>
+      <p class="empty-hint">Zaproś opiekunów, aby wspólnie dbać o psa.</p>
+    </div>
+  }
+
+</div>
+
+<!-- ══════════ INVITE MODAL ══════════ -->
+@if (showInviteModal()) {
+  <div class="modal-backdrop" (click)="closeInviteModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">Zaproś opiekuna</h3>
+      <p class="modal-desc">Wpisz nazwę użytkownika osoby, którą chcesz zaprosić.</p>
+
+      <div class="field">
+        <label class="field-label" for="invite-email">Adres e-mail</label>
+        <div class="field-input-wrap">
+          <span class="field-icon material-icon">mail</span>
+          <input
+            id="invite-email"
+            class="field-input"
+            type="email"
+            placeholder="np. jan@example.com"
+            [formControl]="emailControl"
+            (keydown.enter)="onSubmitInvite()"
+            autocomplete="email" />
+        </div>
+        @if (emailControl.hasError('required') && emailControl.touched) {
+          <span class="field-error">Podaj adres e-mail.</span>
+        }
+        @if (emailControl.hasError('email') && emailControl.touched) {
+          <span class="field-error">Podaj poprawny adres e-mail.</span>
+        }
+      </div>
+
+      @if (inviteError()) {
+        <p class="invite-error">{{ inviteError() }}</p>
+      }
+
+      <div class="modal-actions">
+        <button class="btn-outline" (click)="closeInviteModal()" [disabled]="inviting()">Anuluj</button>
+        <button class="btn-primary" (click)="onSubmitInvite()" [disabled]="inviting()">
+          @if (inviting()) {
+            <div class="spinner-sm"></div>
+          } @else {
+            <span class="material-icon">person_add</span>
+            Wyślij zaproszenie
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}

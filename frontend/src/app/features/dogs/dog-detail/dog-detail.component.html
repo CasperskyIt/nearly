@@ -91,7 +91,7 @@
       <div class="tab-content">
 
         @if (activeTab() === 'calendar') {
-          <app-dog-month-calendar [dogId]="dog()!.id" />
+          <app-dog-calendar-tab [dogId]="dog()!.id" />
         }
 
         @if (activeTab() === 'care') {
@@ -99,33 +99,11 @@
         }
 
         @if (activeTab() === 'health') {
-          <div class="empty-tab">
-            <span class="material-icon empty-tab-icon">medical_services</span>
-            <p>{{ t.dogs.noHealthRecords }}</p>
-            <p class="empty-tab-hint">{{ t.dogs.healthHint }}</p>
-          </div>
+          <app-dog-health-tab [dogId]="dog()!.id" />
         }
 
         @if (activeTab() === 'coguardians') {
-          @if (guardians().length === 0) {
-            <div class="empty-tab">
-              <span class="material-icon empty-tab-icon">group</span>
-              <p>{{ t.dogs.noCoGuardians }}</p>
-              <p class="empty-tab-hint">{{ t.dogs.coGuardiansHint }}</p>
-            </div>
-          } @else {
-            <div class="guardian-list">
-              @for (guardian of guardians(); track guardian.id) {
-                <div class="guardian-item">
-                  <span class="material-icon">person</span>
-                  <div class="guardian-info">
-                    <span class="guardian-role">{{ guardian.role }}</span>
-                    <span class="guardian-status">{{ guardian.status }}</span>
-                  </div>
-                </div>
-              }
-            </div>
-          }
+          <app-dog-coguardians-tab [dogId]="dog()!.id" />
         }
 
       </div>

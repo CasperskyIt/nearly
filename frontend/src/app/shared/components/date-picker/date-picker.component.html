@@ -1,0 +1,102 @@
+<div class="dp-wrapper" (click)="$event.stopPropagation()">
+
+  <!-- Trigger -->
+  <button
+    type="button"
+    class="dp-trigger"
+    [class.open]="isOpen()"
+    [class.has-value]="displayValue()"
+    [disabled]="disabled()"
+    (click)="toggle()">
+    <span class="material-icon dp-icon">calendar_month</span>
+    <span class="dp-display">{{ displayValue() || placeholder }}</span>
+    <span class="material-icon dp-chevron">{{ isOpen() ? 'expand_less' : 'expand_more' }}</span>
+  </button>
+
+  <!-- Dropdown (fixed — escapes overflow:hidden/auto parents like modals) -->
+  @if (isOpen()) {
+    <div class="dp-dropdown"
+      [style.top.px]="dropdownPos().top"
+      [style.left.px]="dropdownPos().left"
+      (click)="$event.stopPropagation()">
+
+      <!-- Month nav -->
+      <div class="dp-month-nav">
+        <button type="button" class="dp-nav-btn" (click)="prevMonth()">
+          <span class="material-icon">chevron_left</span>
+        </button>
+        <span class="dp-month-label">{{ monthLabel() }}</span>
+        <button type="button" class="dp-nav-btn" (click)="nextMonth()">
+          <span class="material-icon">chevron_right</span>
+        </button>
+      </div>
+
+      <!-- Weekday headers -->
+      <div class="dp-weekdays">
+        @for (label of weekLabels; track label) {
+          <span class="dp-weekday">{{ label }}</span>
+        }
+      </div>
+
+      <!-- Day grid -->
+      <div class="dp-grid">
+        @for (cell of cells(); track cell.key) {
+          <button
+            type="button"
+            class="dp-cell"
+            [class.other]="!cell.isCurrentMonth"
+            [class.today]="cell.isToday"
+            [class.selected]="selectedKey() === cell.key"
+            [disabled]="!cell.isCurrentMonth"
+            (click)="selectDay(cell)">
+            {{ cell.day }}
+          </button>
+        }
+      </div>
+
+      <!-- Time picker -->
+      @if (includeTime) {
+        <div class="dp-time">
+          <div class="dp-time-unit">
+            <button type="button" class="dp-time-btn" (click)="adjustHour(1)">
+              <span class="material-icon">expand_less</span>
+            </button>
+            <input
+              class="dp-time-input"
+              type="number"
+              min="0" max="23"
+              [value]="hour()"
+              (change)="setHourDirect($event)" />
+            <button type="button" class="dp-time-btn" (click)="adjustHour(-1)">
+              <span class="material-icon">expand_more</span>
+            </button>
+          </div>
+
+          <span class="dp-time-sep">:</span>
+
+          <div class="dp-time-unit">
+            <button type="button" class="dp-time-btn" (click)="adjustMinute(5)">
+              <span class="material-icon">expand_less</span>
+            </button>
+            <input
+              class="dp-time-input"
+              type="number"
+              min="0" max="59"
+              [value]="minute()"
+              (change)="setMinuteDirect($event)" />
+            <button type="button" class="dp-time-btn" (click)="adjustMinute(-5)">
+              <span class="material-icon">expand_more</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="dp-confirm" (click)="confirm()">
+          <span class="material-icon">check</span>
+          Zatwierdź
+        </button>
+      }
+
+    </div>
+  }
+
+</div>
