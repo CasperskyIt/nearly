@@ -1,5 +1,9 @@
 <main class="map-container" [class.full-width]="!showList()" id="map"></main>
 <div class="zoom-controls">
+  <button class="zoom-btn" (click)="onLocate()">
+    <span class="material-icon">my_location</span>
+  </button>
+  <div class="zoom-divider"></div>
   <button class="zoom-btn" (click)="zoomIn()">
     <span class="material-icon">add</span>
   </button>

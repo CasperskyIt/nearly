@@ -8,11 +8,11 @@
 		<version>4.0.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.nearly</groupId>
-	<artifactId>nearly-backend</artifactId>
+	<groupId>com.dogly</groupId>
+	<artifactId>dogly-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>nearly-backend</name>
-	<description>Nearly app</description>
+	<name>dogly-backend</name>
+	<description>Dogly app</description>
 	<url/>
 	<licenses>
 		<license/>

@@ -80,7 +80,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
       setTimeout(() => {
         this.mapService.invalidateSize();
-      }, 100);
+        this.onLocate();
+      }, 200);
     }
   }
 
@@ -216,7 +217,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   onLocate(): void {
-    if (!navigator.geolocation) {
+    if (!isPlatformBrowser(this.platformId) || !navigator.geolocation) {
       this.dismissWelcome();
       return;
     }
@@ -228,19 +229,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         if (map) {
           map.setView([latitude, longitude], 15);
           const colors = this.themeService.themeColors();
-          L.circle([latitude, longitude], {
-            radius: 100,
-            color: colors.primary,
-            fillColor: colors.primary,
-            fillOpacity: 0.3,
-          }).addTo(map);
+          this.mapService.setUserLocation(latitude, longitude, colors.primary);
         }
         await this.loadPlacesFromSupabase(latitude, longitude);
         this.dismissWelcome();
       },
-      () => {
+      (error) => {
+        this.logger.error('Geolocation error:', error);
         this.dismissWelcome();
-      }
+      },
+      { timeout: 10000 }
     );
   }
 

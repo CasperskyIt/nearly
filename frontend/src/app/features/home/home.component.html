@@ -31,13 +31,6 @@
     </div>
   }
 
-  <div class="map-controls">
-
-    <button class="icon-btn" (click)="mapRef?.onLocate()">
-      <span class="material-icon">my_location</span>
-    </button>
-  </div>
-
   <button class="sidebar-toggle" (click)="toggleList()" [class.collapsed]="!showList()">
     <span class="material-icon">{{ showList() ? 'chevron_left' : 'chevron_right' }}</span>
   </button>

@@ -6,6 +6,7 @@ export class MapService {
   private map: L.Map | null = null;
   private markers: L.Marker[] = [];
   private tileLayer: L.TileLayer | null = null;
+  private userLocationLayer: L.LayerGroup | null = null;
 
   private lightTiles = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
   private darkTiles = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
@@ -28,6 +29,42 @@ export class MapService {
     }
     this.markers = [];
     this.tileLayer = null;
+    this.userLocationLayer = null;
+  }
+
+  setUserLocation(lat: number, lng: number, primaryColor: string): void {
+    if (!this.map) return;
+
+    if (this.userLocationLayer) {
+      this.userLocationLayer.remove();
+    }
+
+    this.userLocationLayer = L.layerGroup();
+
+    L.circle([lat, lng], {
+      radius: 80,
+      color: primaryColor,
+      fillColor: primaryColor,
+      fillOpacity: 0.15,
+      weight: 2,
+    }).addTo(this.userLocationLayer);
+
+    L.circleMarker([lat, lng], {
+      radius: 10,
+      color: 'white',
+      fillColor: primaryColor,
+      fillOpacity: 1,
+      weight: 3,
+    }).addTo(this.userLocationLayer);
+
+    this.userLocationLayer.addTo(this.map);
+  }
+
+  clearUserLocation(): void {
+    if (this.userLocationLayer) {
+      this.userLocationLayer.remove();
+      this.userLocationLayer = null;
+    }
   }
 
   getMap(): L.Map | null {
